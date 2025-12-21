@@ -66,7 +66,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn-submit">添加情侣信息</button>
+            <button type="submit" class="btn-submit" id="submitBtn">添加情侣信息</button>
+            <div class="loading" id="loading">正在添加中，请稍候...</div>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
             <a href="index.html" class="btn-back">返回首页</a>
         </form>
     </div>
@@ -75,6 +78,11 @@
         const noPartnerCheckbox = document.getElementById('noPartner');
         const partnerFields = document.getElementById('partnerFields');
         const myGenderRadios = document.querySelectorAll('input[name="myGender"]');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingDiv = document.getElementById('loading');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const successMessageDiv = document.getElementById('successMessage');
+        let isSubmitting = false; // 防重复提交标志
 
         // 切换伴侣字段显示/隐藏
         noPartnerCheckbox.addEventListener('change', function() {
@@ -85,9 +93,34 @@
             }
         });
 
+        // 显示消息
+        function showMessage(element, message, isError = true) {
+            element.textContent = message;
+            element.style.display = 'block';
+            if (isError) {
+                successMessageDiv.style.display = 'none';
+            } else {
+                errorMessageDiv.style.display = 'none';
+            }
+        }
+
+        // 隐藏所有消息
+        function hideAllMessages() {
+            loadingDiv.style.display = 'none';
+            errorMessageDiv.style.display = 'none';
+            successMessageDiv.style.display = 'none';
+        }
+
         // 表单提交处理
         document.getElementById('coupleForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // 防重复提交检查
+            if (isSubmitting) {
+                return;
+            }
+            
+            hideAllMessages();
             
             const password = document.getElementById('password').value;
             const myName = document.getElementById('myName').value;
@@ -97,19 +130,19 @@
 
             // 验证必填字段
             if (!password) {
-                alert('请输入管理员密码');
+                showMessage(errorMessageDiv, '请输入管理员密码');
                 return;
             }
             if (!myName) {
-                alert('请输入您的姓名');
+                showMessage(errorMessageDiv, '请输入您的姓名');
                 return;
             }
             if (!myQQ) {
-                alert('请输入您的QQ号码');
+                showMessage(errorMessageDiv, '请输入您的QQ号码');
                 return;
             }
             if (!myBirth) {
-                alert('请输入您的生日');
+                showMessage(errorMessageDiv, '请输入您的生日');
                 return;
             }
 
@@ -137,19 +170,19 @@
                 anniversary = document.getElementById('anniversary').value;
                 
                 if (!partnerName) {
-                    alert('请输入伴侣姓名');
+                    showMessage(errorMessageDiv, '请输入伴侣姓名');
                     return;
                 }
                 if (!partnerQQ) {
-                    alert('请输入伴侣QQ号码');
+                    showMessage(errorMessageDiv, '请输入伴侣QQ号码');
                     return;
                 }
                 if (!partnerBirth) {
-                    alert('请输入伴侣生日');
+                    showMessage(errorMessageDiv, '请输入伴侣生日');
                     return;
                 }
                 if (!anniversary) {
-                    alert('请输入恋爱纪念日');
+                    showMessage(errorMessageDiv, '请输入恋爱纪念日');
                     return;
                 }
             }
@@ -201,6 +234,12 @@
                 };
             }
 
+            // 设置提交状态
+            isSubmitting = true;
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            loadingDiv.style.display = 'block';
+
             try {
                 const response = await fetch(`https://jnr-api.lvxin.xn--6qq986b3xl/api/add?password=${encodeURIComponent(password)}`, {
                     method: 'POST',
@@ -213,13 +252,24 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert('添加成功！');
-                    window.location.href = 'index.html';
+                    showMessage(successMessageDiv, '添加成功！', false);
+                    // 2秒后跳转到首页
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
                 } else {
-                    alert('添加失败：' + (result.error || '未知错误'));
+                    showMessage(errorMessageDiv, '添加失败：' + (result.error || '未知错误'));
+                    // 重置提交状态，允许重新提交
+                    isSubmitting = false;
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
                 }
             } catch (error) {
-                alert('网络错误：' + error.message);
+                showMessage(errorMessageDiv, '网络错误：' + error.message);
+                // 重置提交状态，允许重新提交
+                isSubmitting = false;
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
             }
         });
     </script>
