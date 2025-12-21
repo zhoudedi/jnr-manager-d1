@@ -30,7 +30,7 @@
         async function loadCoupleData() {
             try {
                 // 使用你的 Worker URL 替换这里的地址
-                const response = await fetch('https://your-worker-name.your-account.workers.dev/api/data');
+                const response = await fetch('https://jnr-api.lvxin.xn--6qq986b3xl/api/data');
                 if (!response.ok) throw new Error('文件未找到，请检查数据是否存在');
                 const couples = await response.json();
                 
