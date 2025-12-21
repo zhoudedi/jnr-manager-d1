@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 生日 & 💍 纪念日记录</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>🎂 生日 & 💍 纪念日记录</h1>
+    <div class="couple-grid" id="container">
+        <div class="loading">加载中...</div>
+    </div>
+    <script>
+        // 使用你的 Worker URL 替换这里的地址
+        const CF_API_URL = 'https://jnr.zdd-d14.workers.dev/api/data';
+        
+        async function loadData() {
+            try {
+                const response = await fetch(CF_API_URL);
+                if (!response.ok) throw new Error('无法获取数据');
+                const data = await response.json();
+                renderIndex(data);
+                setInterval(() => renderIndex(data), 60 * 60 * 1000);
+            } catch (error) {
+                document.getElementById('container').innerHTML = 
+                `<div class="error-message">加载失败: ${error.message}</div>`;
+            }
+        }
+
+        function isInvalidDate(dateStr) {
+            return dateStr.includes('0000-00-00') || dateStr.includes('00-00-00');
+        }
+
+        function calculateAge(birthStr) {
+            if (isInvalidDate(birthStr)) {
+                return "未知";
+            }
+            
+            const birth = new Date(birthStr.split(' ')[0]);
+            const nowDate = new Date();
+            let age = nowDate.getFullYear() - birth.getFullYear();
+            const m = nowDate.getMonth() - birth.getMonth();
+            if (m < 0 || (m === 0 && nowDate.getDate() < birth.getDate())) age--;
+            return age;
+        }
+
+        function getBirthdayElement(person) {
+            if (isInvalidDate(person.birth)) {
+                return `<span class="countdown-text">🎂 生日信息未知</span>`;
+            }
+            
+            const nowDate = new Date();
+            const [datePart, timePart] = person.birth.split(' ');
+            const [_, birthMonth, birthDay] = datePart.split('-').map(Number);
+            const [birthHour = 0] = (timePart || '00:00').split(':').map(Number);
+
+            const isBirthdayToday = 
+                nowDate.getMonth() === birthMonth - 1 &&
+                nowDate.getDate() === birthDay &&
+                nowDate.getHours() >= birthHour;
+
+            if (isBirthdayToday) {
+                const linkUrl = `birthday.html?name=${encodeURIComponent(person.name)}`;
+                return `<a href="${linkUrl}" class="countdown-text birthday-today">🎉生日快乐!</a>`;
+            }
+
+            let nextBirthYear = nowDate.getFullYear();
+            let nextBirth = new Date(nextBirthYear, birthMonth - 1, birthDay, birthHour, 0);
+            if (nextBirth <= nowDate) {
+                nextBirth.setFullYear(nextBirthYear + 1);
+            }
+
+            const diffMs = nextBirth - nowDate;
+            const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const days = Math.floor(totalHours / 24);
+            const hours = totalHours % 24;
+
+            return `<span class="countdown-text">🎂 距离生日还有${days}天${hours}小时</span>`;
+        }
+
+        function getAnniversaryStatus(startStr) {
+            if (isInvalidDate(startStr)) {
+                return `💔 还没有伴侣吧`;
+            }
+            
+            const nowDate = new Date();
+            const startDate = new Date(startStr);
+
+            const diffMs = nowDate - startDate;
+            const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            const isAnniversaryToday =
+                nowDate.getMonth() === startDate.getMonth() &&
+                nowDate.getDate() === startDate.getDate();
+
+            if (isAnniversaryToday) {
+                const years = nowDate.getFullYear() - startDate.getFullYear();
+                return `🎉 ${years}周年纪念日快乐！`;
+            }
+
+            return `💍 我们已相爱${totalDays}天`;
+        }
+
+        function renderIndex(couples) {
+            const container = document.getElementById('container');
+            container.innerHTML = '';
+
+            couples.forEach(c => {
+                const maleHtml = getBirthdayElement(c.male);
+                const femaleHtml = getBirthdayElement(c.female);
+                const anniStatus = getAnniversaryStatus(c.anniversary);
+
+                const card = document.createElement('div');
+                card.className = 'couple-card';
+                card.innerHTML = `
+                    <div class="couple-header">👦 ${c.male.name} & 👧 ${c.female.name}</div>
+                    <div class="person-item">
+                        <div class="avatar"><img src="https://q1.qlogo.cn/g?b=qq&nk=${c.male.qq}&s=100" alt="头像"></div>
+                        <div class="info-box">
+                            <span class="name">♂${c.male.name}</span>
+                            <div class="info-row">${maleHtml}</div>
+                            <div class="info-row">📅 当前${calculateAge(c.male.birth)} 岁</div>
+                        </div>
+                    </div>
+                    <div class="person-item">
+                        <div class="avatar"><img src="https://q1.qlogo.cn/g?b=qq&nk=${c.female.qq}&s=100" alt="头像"></div>
+                        <div class="info-box">
+                            <span class="name">♀${c.female.name}</span>
+                            <div class="info-row">${femaleHtml}</div>
+                            <div class="info-row">📅 当前${calculateAge(c.female.birth)} 岁</div>
+                        </div>
+                    </div>
+                    <div class="anniversary-box">${anniStatus}</div>
+                    <a href="diary.html?id=${c.id}" class="btn diary">📖 查看恋爱日记</a>
+                `;
+                container.appendChild(card);
+            });
+
+            // 添加 & 修改功能卡片
+            const addEditCard = document.createElement('div');
+            addEditCard.className = 'couple-card';
+            addEditCard.innerHTML = `
+                <div class="couple-header" style="background: linear-gradient(45deg, #28a745, #fd7e14);">
+                    <span style="color: white; font-weight: bold;">➕ 添加 & ✏️ 修改情侣信息</span>
+                </div>
+                <div class="person-item">
+                    <div class="avatar" style="display: flex; justify-content: center; align-items: center;">
+                        <span style="font-size: 30px;">👤</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="name">添加新情侣</span>
+                        <div class="info-row">
+                            <span class="countdown-text">点击下方按钮添加新的情侣信息</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="countdown-text">需要验证密码才能操作</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="avatar" style="display: flex; justify-content: center; align-items: center;">
+                        <span style="font-size: 30px;">🔧</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="name">修改/删除现有信息</span>
+                        <div class="info-row">
+                            <span class="countdown-text">选择情侣后可修改或删除信息</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="countdown-text">需要验证密码才能操作</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="add.html" class="btn" style="background: #28a745;">➕ 添加情侣信息</a>
+                <a href="manage.html" class="btn" style="background: #ffc107; color: #212529; margin-top: 10px;">🗑️ 管理情侣信息</a>
+            `;
+            container.appendChild(addEditCard);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
