@@ -9,227 +9,218 @@
 <body>
     <div class="container">
         <h1>添加情侣信息</h1>
-        
-        <form id="authForm" class="password-section">
+        <form id="coupleForm">
+            <!-- 密码验证 -->
             <div class="form-group">
                 <label for="password">验证密码：</label>
-                <input type="password" id="password" name="password" placeholder="请输入密码：xiaozhou" required>
+                <input type="password" id="password" name="password" placeholder="请输入管理员密码" required>
             </div>
-            <button type="submit" class="submit-btn">验证密码</button>
-        </form>
-        
-        <form id="addForm" class="hidden">
-            <div class="form-group">
-                <label>我的性别：</label>
-                <div class="checkbox-group">
-                    <input type="radio" id="genderMale" name="gender" value="male" required>
-                    <label for="genderMale">男性</label>
-                    <input type="radio" id="genderFemale" name="gender" value="female" required>
-                    <label for="genderFemale">女性</label>
+
+            <!-- 我的信息 -->
+            <div class="form-section">
+                <h2>我的信息</h2>
+                <div class="form-group">
+                    <label>我的性别：</label>
+                    <label><input type="radio" name="myGender" value="male" checked> 男性</label>
+                    <label><input type="radio" name="myGender" value="female"> 女性</label>
+                </div>
+                <div class="form-group">
+                    <label for="myName">我的姓名：</label>
+                    <input type="text" id="myName" name="myName" placeholder="请输入您的姓名" required>
+                </div>
+                <div class="form-group">
+                    <label for="myQQ">我的QQ号码：</label>
+                    <input type="text" id="myQQ" name="myQQ" placeholder="请输入您的QQ号码" required>
+                </div>
+                <div class="form-group">
+                    <label for="myBirth">我的生日：</label>
+                    <input type="datetime-local" id="myBirth" name="myBirth" required>
                 </div>
             </div>
-            
-            <div class="form-group">
-                <label for="myName">我的姓名：</label>
-                <input type="text" id="myName" name="myName" placeholder="请输入您的姓名" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="myQQ">我的QQ号码：</label>
-                <input type="text" id="myQQ" name="myQQ" placeholder="请输入您的QQ号码" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="myBirth">我的生日：</label>
-                <input type="datetime-local" id="myBirth" name="myBirth" required>
-            </div>
-            
-            <div class="partner-section">
-                <h3>伴侣信息</h3>
-                
-                <div class="no-partner-checkbox">
-                    <input type="checkbox" id="noPartner" name="noPartner" value="1" checked>
-                    <label for="noPartner">我是单身（无伴侣）</label>
+
+            <!-- 伴侣信息 -->
+            <div class="form-section">
+                <h2>伴侣信息</h2>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="noPartner"> 我是单身（无伴侣）
+                    </label>
                 </div>
-                
-                <div id="partnerInfo">
+                <div id="partnerFields">
                     <div class="form-group">
                         <label for="partnerName">伴侣姓名：</label>
-                        <input type="text" id="partnerName" name="partnerName" placeholder="请输入伴侣姓名" required>
+                        <input type="text" id="partnerName" name="partnerName" placeholder="请输入伴侣姓名">
                     </div>
-                    
                     <div class="form-group">
                         <label for="partnerQQ">伴侣QQ号码：</label>
-                        <input type="text" id="partnerQQ" name="partnerQQ" placeholder="请输入伴侣QQ号码" required>
+                        <input type="text" id="partnerQQ" name="partnerQQ" placeholder="请输入伴侣QQ号码">
                     </div>
-                    
                     <div class="form-group">
                         <label for="partnerBirth">伴侣生日：</label>
-                        <input type="datetime-local" id="partnerBirth" name="partnerBirth" required>
+                        <input type="datetime-local" id="partnerBirth" name="partnerBirth">
                     </div>
-                    
                     <div class="form-group">
                         <label for="anniversary">恋爱纪念日：</label>
-                        <input type="datetime-local" id="anniversary" name="anniversary" required>
+                        <input type="datetime-local" id="anniversary" name="anniversary">
                     </div>
                 </div>
             </div>
-            
-            <button type="submit" class="submit-btn">添加情侣信息</button>
+
+            <button type="submit" class="btn-submit">添加情侣信息</button>
+            <a href="index.html" class="btn-back">返回首页</a>
         </form>
-        
-        <a href="index.html" class="back-btn hidden" id="backBtn">返回首页</a>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const authForm = document.getElementById('authForm');
-            const addForm = document.getElementById('addForm');
-            const backBtn = document.getElementById('backBtn');
-            const noPartnerCheckbox = document.getElementById('noPartner');
-            const partnerInfo = document.getElementById('partnerInfo');
+        const noPartnerCheckbox = document.getElementById('noPartner');
+        const partnerFields = document.getElementById('partnerFields');
+        const myGenderRadios = document.querySelectorAll('input[name="myGender"]');
+
+        // 切换伴侣字段显示/隐藏
+        noPartnerCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                partnerFields.style.display = 'none';
+            } else {
+                partnerFields.style.display = 'block';
+            }
+        });
+
+        // 表单提交处理
+        document.getElementById('coupleForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            // 使用你的 Worker URL 替换这里的地址
-            const CF_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/add';
+            const password = document.getElementById('password').value;
+            const myName = document.getElementById('myName').value;
+            const myQQ = document.getElementById('myQQ').value;
+            const myBirth = document.getElementById('myBirth').value;
+            const isNoPartner = noPartnerCheckbox.checked;
+
+            // 验证必填字段
+            if (!password) {
+                alert('请输入管理员密码');
+                return;
+            }
+            if (!myName) {
+                alert('请输入您的姓名');
+                return;
+            }
+            if (!myQQ) {
+                alert('请输入您的QQ号码');
+                return;
+            }
+            if (!myBirth) {
+                alert('请输入您的生日');
+                return;
+            }
+
+            let partnerName, partnerQQ, partnerBirth, anniversary;
             
-            // 密码验证
-            authForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const password = document.getElementById('password').value;
+            if (isNoPartner) {
+                // 获取我的性别
+                let myGender = 'male';
+                myGenderRadios.forEach(radio => {
+                    if (radio.checked) {
+                        myGender = radio.value;
+                    }
+                });
                 
-                if (password === 'xiaozhou') {
-                    authForm.classList.add('hidden');
-                    addForm.classList.remove('hidden');
-                    backBtn.classList.remove('hidden');
-                } else {
-                    alert('密码错误，请重新输入');
+                // 设置默认值
+                partnerName = myGender === 'male' ? '未知女友' : '未知男友';
+                partnerQQ = '0000000001';
+                partnerBirth = '0000-00-00T00:00';
+                anniversary = '0000-00-00T00:00';
+            } else {
+                // 验证伴侣信息
+                partnerName = document.getElementById('partnerName').value;
+                partnerQQ = document.getElementById('partnerQQ').value;
+                partnerBirth = document.getElementById('partnerBirth').value;
+                anniversary = document.getElementById('anniversary').value;
+                
+                if (!partnerName) {
+                    alert('请输入伴侣姓名');
+                    return;
+                }
+                if (!partnerQQ) {
+                    alert('请输入伴侣QQ号码');
+                    return;
+                }
+                if (!partnerBirth) {
+                    alert('请输入伴侣生日');
+                    return;
+                }
+                if (!anniversary) {
+                    alert('请输入恋爱纪念日');
+                    return;
+                }
+            }
+
+            // 构建请求数据
+            const requestData = {
+                male: {
+                    name: '',
+                    qq: '',
+                    birth: ''
+                },
+                female: {
+                    name: '',
+                    qq: '',
+                    birth: ''
+                },
+                anniversary: anniversary
+            };
+
+            // 确定性别分配
+            let myGender = 'male';
+            myGenderRadios.forEach(radio => {
+                if (radio.checked) {
+                    myGender = radio.value;
                 }
             });
-            
-            // 控制伴侣信息显示/隐藏
-            noPartnerCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    partnerInfo.classList.add('hidden');
-                } else {
-                    partnerInfo.classList.remove('hidden');
-                }
-            });
-            
-            partnerInfo.classList.add('hidden');
-            
-            // 表单提交处理
-            document.getElementById('addForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const formData = new FormData(this);
-                const gender = formData.get('gender');
-                const myName = formData.get('myName');
-                const myQQ = formData.get('myQQ');
-                const myBirth = formData.get('myBirth');
-                const noPartner = formData.get('noPartner') === '1';
-                
-                const formatDate = (dateStr) => {
-                    if (!dateStr) return '0000-00-00 00:00';
-                    const date = new Date(dateStr);
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    const hours = String(date.getHours()).padStart(2, '0');
-                    const minutes = String(date.getMinutes()).padStart(2, '0');
-                    return `${year}-${month}-${day} ${hours}:${minutes}`;
+
+            if (myGender === 'male') {
+                requestData.male = {
+                    name: myName,
+                    qq: myQQ,
+                    birth: myBirth
                 };
+                requestData.female = {
+                    name: partnerName,
+                    qq: partnerQQ,
+                    birth: partnerBirth
+                };
+            } else {
+                requestData.female = {
+                    name: myName,
+                    qq: myQQ,
+                    birth: myBirth
+                };
+                requestData.male = {
+                    name: partnerName,
+                    qq: partnerQQ,
+                    birth: partnerBirth
+                };
+            }
+
+            try {
+                const response = await fetch(`https://jnr-api.lvxin.xn--6qq986b3xl/api/add?password=${encodeURIComponent(password)}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
                 
-                let newData;
-                
-                if (noPartner) {
-                    if (gender === 'male') {
-                        newData = {
-                            male: {
-                                name: myName,
-                                qq: myQQ,
-                                birth: formatDate(myBirth)
-                            },
-                            female: {
-                                name: "未知女友",
-                                qq: "0000000000",
-                                birth: "0000-00-00 00:00"
-                            },
-                            anniversary: "00-00-00 00:00"
-                        };
-                    } else {
-                        newData = {
-                            male: {
-                                name: "未知男友",
-                                qq: "0000000000",
-                                birth: "0000-00-00 00:00"
-                            },
-                            female: {
-                                name: myName,
-                                qq: myQQ,
-                                birth: formatDate(myBirth)
-                            },
-                            anniversary: "00-00-00 00:00"
-                        };
-                    }
+                if (result.success) {
+                    alert('添加成功！');
+                    window.location.href = 'index.html';
                 } else {
-                    const partnerName = formData.get('partnerName');
-                    const partnerQQ = formData.get('partnerQQ');
-                    const partnerBirth = formData.get('partnerBirth');
-                    const anniversary = formData.get('anniversary');
-                    
-                    if (gender === 'male') {
-                        newData = {
-                            male: {
-                                name: myName,
-                                qq: myQQ,
-                                birth: formatDate(myBirth)
-                            },
-                            female: {
-                                name: partnerName,
-                                qq: partnerQQ,
-                                birth: formatDate(partnerBirth)
-                            },
-                            anniversary: formatDate(anniversary)
-                        };
-                    } else {
-                        newData = {
-                            male: {
-                                name: partnerName,
-                                qq: partnerQQ,
-                                birth: formatDate(partnerBirth)
-                            },
-                            female: {
-                                name: myName,
-                                qq: myQQ,
-                                birth: formatDate(myBirth)
-                            },
-                            anniversary: formatDate(anniversary)
-                        };
-                    }
+                    alert('添加失败：' + (result.error || '未知错误'));
                 }
-                
-                try {
-                    const response = await fetch(`${CF_API_URL}?password=xiaozhou`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(newData)
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        alert('情侣信息添加成功！');
-                        window.location.href = 'index.html';
-                    } else {
-                        alert('添加失败: ' + result.error);
-                    }
-                } catch (error) {
-                    console.error('保存数据失败:', error);
-                    alert('保存数据失败: ' + error.message);
-                }
-            });
+            } catch (error) {
+                alert('网络错误：' + error.message);
+            }
         });
     </script>
 </body>
