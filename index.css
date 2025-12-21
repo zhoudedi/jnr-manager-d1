@@ -163,3 +163,176 @@ h1 {
     text-align: center;
     padding: 20px;
 }
+/* 在原来的 index.css 末尾添加以下样式 */
+.loading-container {
+    grid-column: 1 / -1; /* 跨越所有列，居中显示 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px; /* 确保有足够的高度来居中 */
+    text-align: center;
+}
+
+.loading {
+    font-size: 1.2em;
+    color: #666;
+    padding: 20px;
+    font-weight: bold;
+}
+
+/* 可选：添加加载动画效果 */
+.loading::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+/* 四季特效样式 */
+/* 四季特效样式 - 最上层 */
+.season-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 允许点击穿透到下方元素 */
+    z-index: 9999; /* 置于最顶层 */
+    overflow: hidden;
+}
+
+.season-particle {
+    position: absolute;
+    top: -50px;
+    opacity: 0.8;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* 落叶样式 - 增强版 */
+.leaf {
+    width: 25px;
+    height: 25px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23d4af37" d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>') no-repeat center;
+    background-size: contain;
+    animation: fall-leaf 6s linear infinite;
+}
+
+/* 雪花样式 - 增强版 */
+.snowflake {
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+    animation: fall-snow 5s linear infinite;
+}
+
+/* 春天花瓣样式 - 增强版 */
+.petal {
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(45deg, #ff69b4, #ffb6c1);
+    border-radius: 50% 50% 0;
+    transform: rotate(45deg);
+    animation: fall-petal 8s linear infinite;
+}
+
+/* 夏天雨滴样式 - 增强版 */
+.raindrop {
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(135, 206, 250, 0.8), rgba(70, 130, 180, 0.6));
+    border-radius: 0 0 5px 5px;
+    animation: fall-rain 2s linear infinite;
+}
+
+/* 落叶动画 - 增强版 */
+@keyframes fall-leaf {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 0.9;
+    }
+    25% {
+        transform: translateX(15px) translateY(25vh) rotate(90deg);
+    }
+    50% {
+        transform: translateX(-10px) translateY(50vh) rotate(180deg);
+    }
+    75% {
+        transform: translateX(20px) translateY(75vh) rotate(270deg);
+    }
+    100% {
+        transform: translateX(-15px) translateY(100vh) rotate(360deg);
+        opacity: 0.1;
+    }
+}
+
+/* 雪花动画 - 增强版 */
+@keyframes fall-snow {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 0.9;
+    }
+    25% {
+        transform: translateX(10px) translateY(25vh) rotate(90deg);
+    }
+    50% {
+        transform: translateX(-5px) translateY(50vh) rotate(180deg);
+    }
+    75% {
+        transform: translateX(15px) translateY(75vh) rotate(270deg);
+    }
+    100% {
+        transform: translateX(-10px) translateY(100vh) rotate(360deg);
+        opacity: 0.1;
+    }
+}
+
+/* 花瓣动画 - 增强版 */
+@keyframes fall-petal {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 0.9;
+    }
+    25% {
+        transform: translateX(-20px) translateY(25vh) rotate(-90deg);
+    }
+    50% {
+        transform: translateX(15px) translateY(50vh) rotate(-180deg);
+    }
+    75% {
+        transform: translateX(-25px) translateY(75vh) rotate(-270deg);
+    }
+    100% {
+        transform: translateX(20px) translateY(100vh) rotate(-360deg);
+        opacity: 0.1;
+    }
+}
+
+/* 雨滴动画 - 增强版 */
+@keyframes fall-rain {
+    0% {
+        transform: translateX(0) translateY(0);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(8px) translateY(100vh);
+        opacity: 0.2;
+    }
+}
+
+/* 淡入淡出过渡 */
+.season-particle.fade-in {
+    animation-duration: 0.8s;
+    animation-name: fade-in;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 0.9; }
+}

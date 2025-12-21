@@ -7,10 +7,15 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div class="season-effects" id="seasonEffects"></div>
+    
     <h1>🎂 生日 & 💍 纪念日记录</h1>
     <div class="couple-grid" id="container">
-        <div class="loading">加载中...</div>
+        <div class="loading-container">
+            <div class="loading">加载中...</div>
+        </div>
     </div>
+
     <script>
         // 使用你的 Worker URL 替换这里的地址
         const CF_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/data';
@@ -178,7 +183,148 @@
             container.appendChild(addEditCard);
         }
 
-        document.addEventListener('DOMContentLoaded', loadData);
+        // 四季特效系统 - 最上层版本
+        class SeasonEffects {
+            constructor() {
+                this.container = document.getElementById('seasonEffects');
+                this.currentSeason = null;
+                this.particles = [];
+                this.particleCount = 50; // 增加粒子数量
+                this.init();
+            }
+
+            init() {
+                this.updateSeason();
+                setInterval(() => this.updateSeason(), 60000); // 每分钟检查一次季节变化
+            }
+
+            getSeason() {
+                const now = new Date();
+                const month = now.getMonth() + 1; // 月份从0开始，需要+1
+
+                if (month >= 3 && month <= 5) return 'spring'; // 春天 3-5月
+                if (month >= 6 && month <= 8) return 'summer'; // 夏天 6-8月
+                if (month >= 9 && month <= 11) return 'autumn'; // 秋天 9-11月
+                return 'winter'; // 冬天 12-2月
+            }
+
+            updateSeason() {
+                const newSeason = this.getSeason();
+                
+                if (newSeason !== this.currentSeason) {
+                    this.currentSeason = newSeason;
+                    this.clearParticles();
+                    this.createParticles();
+                }
+            }
+
+            clearParticles() {
+                this.particles.forEach(particle => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                });
+                this.particles = [];
+            }
+
+            createParticles() {
+                for (let i = 0; i < this.particleCount; i++) {
+                    const particle = this.createParticle();
+                    this.container.appendChild(particle);
+                    this.particles.push(particle);
+                    
+                    // 随机延迟创建，避免同时出现
+                    setTimeout(() => {
+                        particle.classList.add('fade-in');
+                    }, Math.random() * 3000);
+                }
+                
+                // 持续创建新粒子，保持效果
+                this.startContinuousCreation();
+            }
+            
+            startContinuousCreation() {
+                // 持续创建新粒子，替换消失的粒子
+                setInterval(() => {
+                    if (this.particles.length < this.particleCount) {
+                        const particle = this.createParticle();
+                        this.container.appendChild(particle);
+                        this.particles.push(particle);
+                        particle.classList.add('fade-in');
+                    }
+                }, 300);
+            }
+
+            createParticle() {
+                const particle = document.createElement('div');
+                particle.className = `season-particle ${this.getParticleClass()}`;
+                
+                // 随机位置
+                const left = Math.random() * 100;
+                particle.style.left = `${left}%`;
+                
+                // 随机动画持续时间
+                const duration = this.getParticleDuration();
+                particle.style.animationDuration = `${duration}s`;
+                
+                // 随机大小
+                const size = 0.8 + Math.random() * 1.2;
+                particle.style.transform = `scale(${size})`;
+                
+                // 随机透明度
+                particle.style.opacity = 0.6 + Math.random() * 0.3;
+                
+                // 随机旋转方向和速度
+                const rotationDirection = Math.random() > 0.5 ? 1 : -1;
+                particle.style.setProperty('--rotation-direction', rotationDirection);
+                
+                // 重新开始动画
+                setTimeout(() => {
+                    particle.style.animation = 'none';
+                    setTimeout(() => {
+                        particle.style.animation = `${this.getParticleAnimation()} ${duration}s linear infinite`;
+                    }, 10);
+                }, Math.random() * 5000);
+
+                return particle;
+            }
+
+            getParticleClass() {
+                switch(this.currentSeason) {
+                    case 'spring': return 'petal';
+                    case 'summer': return 'raindrop';
+                    case 'autumn': return 'leaf';
+                    case 'winter': return 'snowflake';
+                    default: return 'snowflake';
+                }
+            }
+
+            getParticleDuration() {
+                switch(this.currentSeason) {
+                    case 'spring': return 6 + Math.random() * 4; // 6-10秒
+                    case 'summer': return 1.5 + Math.random() * 1.5; // 1.5-3秒
+                    case 'autumn': return 4 + Math.random() * 4; // 4-8秒
+                    case 'winter': return 4 + Math.random() * 4; // 4-8秒
+                    default: return 6;
+                }
+            }
+
+            getParticleAnimation() {
+                switch(this.currentSeason) {
+                    case 'spring': return 'fall-petal';
+                    case 'summer': return 'fall-rain';
+                    case 'autumn': return 'fall-leaf';
+                    case 'winter': return 'fall-snow';
+                    default: return 'fall-snow';
+                }
+            }
+        }
+
+        // 初始化四季特效
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            new SeasonEffects();
+        });
     </script>
 </body>
 </html>
