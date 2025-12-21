@@ -55,27 +55,27 @@
                 <div id="partnerInfo">
                     <div class="form-group">
                         <label for="partnerName">伴侣姓名：</label>
-                        <input type="text" id="partnerName" name="partnerName" placeholder="请输入伴侣姓名" required>
+                        <input type="text" id="partnerName" name="partnerName" placeholder="请输入伴侣姓名">
                     </div>
                     
                     <div class="form-group">
                         <label for="partnerQQ">伴侣QQ号码：</label>
-                        <input type="text" id="partnerQQ" name="partnerQQ" placeholder="请输入伴侣QQ号码" required>
+                        <input type="text" id="partnerQQ" name="partnerQQ" placeholder="请输入伴侣QQ号码">
                     </div>
                     
                     <div class="form-group">
                         <label for="partnerBirth">伴侣生日：</label>
-                        <input type="datetime-local" id="partnerBirth" name="partnerBirth" required>
+                        <input type="datetime-local" id="partnerBirth" name="partnerBirth">
                     </div>
                     
                     <div class="form-group">
                         <label for="anniversary">恋爱纪念日：</label>
-                        <input type="datetime-local" id="anniversary" name="anniversary" required>
+                        <input type="datetime-local" id="anniversary" name="anniversary">
                     </div>
                 </div>
             </div>
             
-            <button type="submit" class="submit-btn">添加情侣信息</button>
+            <button type="submit" class="submit-btn" id="submitBtn">添加情侣信息</button>
         </form>
         
         <a href="index.html" class="back-btn hidden" id="backBtn">返回首页</a>
@@ -88,9 +88,13 @@
             const backBtn = document.getElementById('backBtn');
             const noPartnerCheckbox = document.getElementById('noPartner');
             const partnerInfo = document.getElementById('partnerInfo');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // 防重复提交标志
+            let isSubmitting = false;
             
             // 使用你的 Worker URL 替换这里的地址
-            const CF_API_URL = 'https://your-worker-name.your-account.workers.dev/api/add';
+            const CF_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/add';
             
             // 密码验证
             authForm.addEventListener('submit', function(e) {
@@ -115,11 +119,17 @@
                 }
             });
             
+            // 初始隐藏伴侣信息
             partnerInfo.classList.add('hidden');
             
             // 表单提交处理
             document.getElementById('addForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
+                
+                // 防重复提交检查
+                if (isSubmitting) {
+                    return;
+                }
                 
                 const formData = new FormData(this);
                 const gender = formData.get('gender');
@@ -127,6 +137,45 @@
                 const myQQ = formData.get('myQQ');
                 const myBirth = formData.get('myBirth');
                 const noPartner = formData.get('noPartner') === '1';
+                
+                // 验证必填字段
+                if (!myName) {
+                    alert('请输入您的姓名');
+                    return;
+                }
+                if (!myQQ) {
+                    alert('请输入您的QQ号码');
+                    return;
+                }
+                if (!myBirth) {
+                    alert('请输入您的生日');
+                    return;
+                }
+                
+                // 如果不是单身，验证伴侣信息
+                if (!noPartner) {
+                    const partnerName = formData.get('partnerName');
+                    const partnerQQ = formData.get('partnerQQ');
+                    const partnerBirth = formData.get('partnerBirth');
+                    const anniversary = formData.get('anniversary');
+                    
+                    if (!partnerName) {
+                        alert('请输入伴侣姓名');
+                        return;
+                    }
+                    if (!partnerQQ) {
+                        alert('请输入伴侣QQ号码');
+                        return;
+                    }
+                    if (!partnerBirth) {
+                        alert('请输入伴侣生日');
+                        return;
+                    }
+                    if (!anniversary) {
+                        alert('请输入恋爱纪念日');
+                        return;
+                    }
+                }
                 
                 const formatDate = (dateStr) => {
                     if (!dateStr) return '0000-00-00 00:00';
@@ -151,7 +200,7 @@
                             },
                             female: {
                                 name: "未知女友",
-                                qq: "0000000000",
+                                qq: "0000000001",
                                 birth: "0000-00-00 00:00"
                             },
                             anniversary: "00-00-00 00:00"
@@ -160,7 +209,7 @@
                         newData = {
                             male: {
                                 name: "未知男友",
-                                qq: "0000000000",
+                                qq: "0000000001",
                                 birth: "0000-00-00 00:00"
                             },
                             female: {
@@ -208,8 +257,15 @@
                     }
                 }
                 
+                // 设置提交状态，防止重复提交
+                isSubmitting = true;
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = '添加中...';
+                submitBtn.disabled = true;
+                
                 try {
-                    const response = await fetch(`${CF_API_URL}?password=xiaozhou`, {
+                    const password = document.getElementById('password').value;
+                    const response = await fetch(`${CF_API_URL}?password=${encodeURIComponent(password)}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -224,10 +280,18 @@
                         window.location.href = 'index.html';
                     } else {
                         alert('添加失败: ' + result.error);
+                        // 重置提交状态
+                        isSubmitting = false;
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
                     }
                 } catch (error) {
                     console.error('保存数据失败:', error);
                     alert('保存数据失败: ' + error.message);
+                    // 重置提交状态
+                    isSubmitting = false;
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
                 }
             });
         });
