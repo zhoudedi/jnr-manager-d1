@@ -13,7 +13,7 @@
         <form id="authForm" class="password-section">
             <div class="form-group">
                 <label for="password">验证密码：</label>
-                <input type="password" id="password" name="password" placeholder="请输入密码：" required>
+                <input type="password" id="password" name="password" placeholder="请输入密码：xiaozhou" required autocomplete="new-password">
             </div>
             <button type="submit" class="submit-btn">验证密码</button>
         </form>
@@ -265,13 +265,21 @@
                 
                 try {
                     const password = document.getElementById('password').value;
+                    
+                    // 创建带超时的fetch请求
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+                    
                     const response = await fetch(`${CF_API_URL}?password=${encodeURIComponent(password)}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(newData)
+                        body: JSON.stringify(newData),
+                        signal: controller.signal
                     });
+                    
+                    clearTimeout(timeoutId);
                     
                     const result = await response.json();
                     
@@ -286,8 +294,12 @@
                         submitBtn.disabled = false;
                     }
                 } catch (error) {
-                    console.error('保存数据失败:', error);
-                    alert('保存数据失败: ' + error.message);
+                    if (error.name === 'AbortError') {
+                        alert('请求超时，请检查网络连接后重试');
+                    } else {
+                        console.error('保存数据失败:', error);
+                        alert('保存数据失败: ' + error.message);
+                    }
                     // 重置提交状态
                     isSubmitting = false;
                     submitBtn.textContent = originalText;
