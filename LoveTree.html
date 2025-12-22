@@ -2,7 +2,7 @@
 <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title id="pageTitle">🌳数据加载中...</title>
+    <title id="pageTitle">🌳 数据加载中...</title>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0icmdiKDIyMSwgMTAzLCAxMzEpIj48cGF0aCBkPSJNMTIsMkM4LjEsMiA1LDUuMSA1LDkgYzAsMi40IDEuMiA0LjQgMyw1LjcgQzguNiw5LjQgOS4zLDggMTAuNSw3LjIgQzExLjcsNi4xIDEzLjUsNiAxNSw2IDYuNSwxNS41IDksMjIgMTIsMjJDMTUuNSwyMiAyMCwxNy41IDIwLDljMC0zLjktMy4xLTctNy03eiIvPjwvc3ZnPg==">
     <link type="text/css" rel="stylesheet" href="./LoveTree_files/default.css">
     <script type="text/javascript" src="./LoveTree_files/jquery.min.js"></script>
@@ -113,7 +113,7 @@
                 config.date = couple.anniversary;
                 
                 // 更新页面标题
-                document.getElementById('pageTitle').textContent = `🌳${couple.male.name} & ${couple.female.name} 的爱情树`;
+                document.getElementById('pageTitle').textContent = `🌳 ${couple.male.name} & ${couple.female.name} 的爱情树`;
                 
                 // 更新显示内容
                 $('#code').html(config.lines.map(item => {
@@ -132,7 +132,7 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('error-message').style.display = 'block';
                 
-                document.getElementById('pageTitle').textContent = "未找到对应情侣信息";
+                document.getElementById('pageTitle').textContent = "🌳 未找到对应情侣信息";
             }
         } catch (error) {
             console.error('加载数据失败:', error);
@@ -140,7 +140,7 @@
             document.getElementById('loading').style.display = 'none';
             document.getElementById('error-message').style.display = 'block';
             
-            document.getElementById('pageTitle').textContent = "数据加载失败";
+            document.getElementById('pageTitle').textContent = "🌳 数据加载失败";
         }
     }
 
