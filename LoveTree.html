@@ -113,7 +113,7 @@
                 config.date = couple.anniversary;
                 
                 // 更新页面标题
-                document.getElementById('pageTitle').textContent = `🌳 ${couple.male.name} & ${couple.female.name} 的爱情树`;
+                document.getElementById('pageTitle').textContent = `🌳 ${couple.male.name} & ${couple.female.name}的爱情树`;
                 
                 // 更新显示内容
                 $('#code').html(config.lines.map(item => {
@@ -123,7 +123,7 @@
                     return a + b;
                 }));
                 
-                $("#clock-box-inside-text").html(`${config.names[0]}<span class="STYLE1">与</span> ${config.names[1]}<span class="STYLE1">已经相恋了</span>`);
+                $("#clock-box-inside-text").html(`${config.names[0]} <span class="STYLE1">与</span> ${config.names[1]}<span class="STYLE1">已经相恋了</span>`);
                 
                 // 隐藏加载状态
                 document.getElementById('loading').style.display = 'none';
