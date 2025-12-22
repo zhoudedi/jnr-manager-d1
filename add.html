@@ -76,11 +76,24 @@
                 </div>
             </div>
             
+            <div id="duplicateWarning" class="duplicate-warning hidden">
+                <strong>⚠️ 警告：</strong><span id="warningText"></span>
+            </div>
+            
             <button type="submit" class="submit-btn" id="submitBtn">➕ 添加情侣信息</button>
         </form>
         
         <div class="back-btn-container">
             <a href="index.html" class="back-btn hidden" id="backBtn">🏠 返回首页</a>
+        </div>
+    </div>
+    
+    <!-- 加载指示器 -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在提交数据，请稍候...</p>
+            <p id="retryMessage" class="hidden">网络较慢，正在重试中...</p>
         </div>
     </div>
 
@@ -93,12 +106,17 @@
             const partnerInfo = document.getElementById('partnerInfo');
             const submitBtn = document.getElementById('submitBtn');
             const passwordInput = document.getElementById('password');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const retryMessage = document.getElementById('retryMessage');
+            const duplicateWarning = document.getElementById('duplicateWarning');
+            const warningText = document.getElementById('warningText');
             
             // 防重复提交标志
             let isSubmitting = false;
             
             // 使用你的 Worker URL 替换这里的地址
             const CF_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/add';
+            const DATA_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/data';
             
             // 密码验证
             authForm.addEventListener('submit', function(e) {
@@ -123,10 +141,140 @@
                 } else {
                     partnerInfo.classList.remove('hidden');
                 }
+                
+                // 隐藏重复警告（如果有的话）
+                duplicateWarning.classList.add('hidden');
             });
             
             // 初始隐藏伴侣信息
             partnerInfo.classList.add('hidden');
+            
+            // 延迟函数
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            
+            // 检查QQ是否已存在的函数
+            async function checkDuplicateQQ(myQQ, partnerQQ = null) {
+                try {
+                    const response = await fetch(DATA_API_URL);
+                    const existingData = await response.json();
+                    
+                    // 检查我的QQ是否已存在
+                    const myQQExists = existingData.find(item => 
+                        item.male.qq === myQQ || item.female.qq === myQQ
+                    );
+                    
+                    if (myQQExists) {
+                        return {
+                            duplicate: true,
+                            type: 'my',
+                            name: myQQExists.male.qq === myQQ ? myQQExists.male.name : myQQExists.female.name,
+                            existingQQ: myQQ
+                        };
+                    }
+                    
+                    // 如果有伴侣信息，检查伴侣QQ是否已存在
+                    if (partnerQQ) {
+                        const partnerQQExists = existingData.find(item => 
+                            item.male.qq === partnerQQ || item.female.qq === partnerQQ
+                        );
+                        
+                        if (partnerQQExists) {
+                            return {
+                                duplicate: true,
+                                type: 'partner',
+                                name: partnerQQExists.male.qq === partnerQQ ? partnerQQExists.male.name : partnerQQExists.female.name,
+                                existingQQ: partnerQQ
+                            };
+                        }
+                    }
+                    
+                    return { duplicate: false };
+                } catch (error) {
+                    console.error('检查重复QQ时出错:', error);
+                    // 如果检查失败，仍然允许提交，但记录错误
+                    return { duplicate: false, checkFailed: true };
+                }
+            }
+            
+            // 监听QQ输入变化，实时检查重复
+            document.getElementById('myQQ').addEventListener('blur', async function() {
+                const myQQ = this.value.trim();
+                if (myQQ) {
+                    const partnerQQ = document.getElementById('partnerQQ').value.trim();
+                    const result = await checkDuplicateQQ(myQQ, partnerQQ);
+                    
+                    if (result.duplicate) {
+                        duplicateWarning.classList.remove('hidden');
+                        if (result.type === 'my') {
+                            warningText.textContent = `您的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                        } else {
+                            warningText.textContent = `伴侣的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                        }
+                    } else {
+                        duplicateWarning.classList.add('hidden');
+                    }
+                }
+            });
+            
+            document.getElementById('partnerQQ').addEventListener('blur', async function() {
+                const myQQ = document.getElementById('myQQ').value.trim();
+                const partnerQQ = this.value.trim();
+                
+                if (partnerQQ) {
+                    const result = await checkDuplicateQQ(myQQ, partnerQQ);
+                    
+                    if (result.duplicate) {
+                        duplicateWarning.classList.remove('hidden');
+                        if (result.type === 'my') {
+                            warningText.textContent = `您的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                        } else {
+                            warningText.textContent = `伴侣的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                        }
+                    } else {
+                        duplicateWarning.classList.add('hidden');
+                    }
+                }
+            });
+            
+            // 带重试机制的fetch请求
+            async function fetchWithRetry(url, options, retries = 3, delayMs = 2000) {
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒超时
+                        
+                        const response = await fetch(url, {
+                            ...options,
+                            signal: controller.signal
+                        });
+                        
+                        clearTimeout(timeoutId);
+                        
+                        // 如果请求成功，返回结果
+                        if (response.ok) {
+                            return await response.json();
+                        }
+                        
+                        // 如果服务器返回错误，抛出错误
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    } catch (error) {
+                        console.log(`请求尝试 ${i + 1} 失败:`, error.message);
+                        
+                        // 如果是最后一次尝试，抛出错误
+                        if (i === retries - 1) {
+                            throw error;
+                        }
+                        
+                        // 显示重试消息
+                        retryMessage.classList.remove('hidden');
+                        
+                        // 等待一段时间后重试
+                        await delay(delayMs);
+                    }
+                }
+            }
             
             // 表单提交处理
             document.getElementById('addForm').addEventListener('submit', async function(e) {
@@ -181,6 +329,20 @@
                         alert('请输入恋爱纪念日');
                         return;
                     }
+                }
+                
+                // 检查重复QQ
+                const partnerQQ = noPartner ? null : formData.get('partnerQQ');
+                const duplicateCheck = await checkDuplicateQQ(myQQ, partnerQQ);
+                
+                if (duplicateCheck.duplicate) {
+                    duplicateWarning.classList.remove('hidden');
+                    if (duplicateCheck.type === 'my') {
+                        warningText.textContent = `您的QQ号码(${duplicateCheck.existingQQ})已存在于系统中，名为"${duplicateCheck.name}"的记录。无法重复添加。`;
+                    } else {
+                        warningText.textContent = `伴侣的QQ号码(${duplicateCheck.existingQQ})已存在于系统中，名为"${duplicateCheck.name}"的记录。无法重复添加。`;
+                    }
+                    return;
                 }
                 
                 const formatDate = (dateStr) => {
@@ -269,47 +431,74 @@
                 submitBtn.textContent = '⏳ 添加中...';
                 submitBtn.disabled = true;
                 
+                // 显示加载指示器
+                loadingOverlay.classList.remove('hidden');
+                retryMessage.classList.add('hidden'); // 隐藏重试消息
+                
                 try {
                     const password = passwordInput.value;
                     
-                    // 创建带超时的fetch请求
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
-                    
-                    const response = await fetch(`${CF_API_URL}?password=${encodeURIComponent(password)}`, {
+                    // 使用带重试机制的请求
+                    const result = await fetchWithRetry(`${CF_API_URL}?password=${encodeURIComponent(password)}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(newData),
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    const result = await response.json();
+                        body: JSON.stringify(newData)
+                    }, 3, 2000); // 最多重试3次，每次间隔2秒
                     
                     if (result.success) {
                         alert('🎉 情侣信息添加成功！');
                         window.location.href = 'index.html';
                     } else {
-                        alert('❌ 添加失败: ' + result.error);
+                        alert('❌ 添加失败: ' + (result.error || '未知错误'));
                         // 重置提交状态
                         isSubmitting = false;
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
                     }
                 } catch (error) {
+                    console.error('保存数据失败:', error);
+                    
                     if (error.name === 'AbortError') {
                         alert('⏰ 请求超时，请检查网络连接后重试');
                     } else {
-                        console.error('保存数据失败:', error);
-                        alert('❌ 保存数据失败: ' + error.message);
+                        // 尝试再次获取数据来确认是否真的失败
+                        try {
+                            const verifyResponse = await fetch('https://jnr-api.lvxin.xn--6qq986b3xl/api/data');
+                            const data = await verifyResponse.json();
+                            
+                            // 检查是否有最新添加的数据（通过匹配名称和QQ）
+                            const exists = data.some(item => {
+                                return (
+                                    (item.male.name === newData.male.name && item.male.qq === newData.male.qq) ||
+                                    (item.female.name === newData.female.name && item.female.qq === newData.female.qq)
+                                );
+                            });
+                            
+                            if (exists) {
+                                alert('🎉 恭喜！数据已成功添加，之前的超时是假象！');
+                                window.location.href = 'index.html';
+                            } else {
+                                alert('❌ 保存数据失败: ' + error.message);
+                                // 重置提交状态
+                                isSubmitting = false;
+                                submitBtn.textContent = originalText;
+                                submitBtn.disabled = false;
+                            }
+                        } catch (verifyError) {
+                            console.error('验证数据是否存在时出错:', verifyError);
+                            alert('⚠️ 提交过程中出现问题，请稍后刷新页面查看数据是否已添加');
+                            // 重置提交状态
+                            isSubmitting = false;
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        }
                     }
-                    // 重置提交状态
-                    isSubmitting = false;
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
+                } finally {
+                    // 隐藏加载指示器
+                    loadingOverlay.classList.add('hidden');
+                    retryMessage.classList.add('hidden');
                 }
             });
         });

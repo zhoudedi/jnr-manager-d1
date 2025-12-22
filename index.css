@@ -114,10 +114,18 @@ h1 {
     font-weight: bold;
     color: #856404;
 }
+
+/* 按钮组样式 */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin: 15px;
+    justify-content: center;
+}
+
 .btn {
     display: block;
-    width: 80%;
-    margin: 15px auto;
+    width: 100%;
     padding: 10px;
     background: #007bff;
     color: white;
@@ -127,10 +135,24 @@ h1 {
     cursor: pointer;
     text-decoration: none;
     text-align: center;
+    flex: 1;
 }
+
 .btn.diary { 
     background: #28a745; 
 }
+
+.btn.lovetree { 
+    background: #dc3545; 
+}
+
+/* 禁用按钮样式 */
+.disabled-btn {
+    background: #6c757d !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
 .countdown-text.birthday-today {
     text-decoration: none; /* 去除下划线 */
     color: #ff6b6b; /* 设置文字颜色 */

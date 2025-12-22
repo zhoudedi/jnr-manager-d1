@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎂 生日 & 💍 纪念日记录</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0icmdiKDIyMSwgMTAzLCAxMzEpIj48cGF0aCBkPSJNMTIsMkM4LjEsMiA1LDUuMSA1LDkgYzAsMi40IDEuMiA0LjQgMyw1LjcgQzguNiw5LjQgOS4zLDggMTAuNSw3LjIgQzExLjcsNi4xIDEzLjUsNiAxNSw2IDYuNSwxNS41IDksMjIgMTIsMjJDMTUuNSwyMiAyMCwxNy41IDIwLDljMC0zLjktMy4xLTctNy03eiIvPjwvc3ZnPg==">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -118,6 +119,28 @@
 
                 const card = document.createElement('div');
                 card.className = 'couple-card';
+                
+                // 检查是否有伴侣
+                const hasPartner = !isInvalidDate(c.anniversary);
+                
+                // 生成按钮的HTML
+                let buttonsHtml = '';
+                if (hasPartner) {
+                    buttonsHtml = `
+                        <div class="btn-group">
+                            <a href="diary.html?id=${c.id}" class="btn diary">📖 查看恋爱日记</a>
+                            <a href="LoveTree.html?id=${c.id}" class="btn lovetree">🌳 爱情树</a>
+                        </div>
+                    `;
+                } else {
+                    buttonsHtml = `
+                        <div class="btn-group">
+                            <button class="btn diary disabled-btn" onclick="alert('💔 还没有伴侣，不支持访问')">📖 查看恋爱日记</button>
+                            <button class="btn lovetree disabled-btn" onclick="alert('💔 还没有伴侣，不支持访问')">🌳 爱情树</button>
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
                     <div class="couple-header">👦 ${c.male.name} & 👧 ${c.female.name}</div>
                     <div class="person-item">
@@ -137,7 +160,7 @@
                         </div>
                     </div>
                     <div class="anniversary-box">${anniStatus}</div>
-                    <a href="diary.html?id=${c.id}" class="btn diary">📖 查看恋爱日记</a>
+                    ${buttonsHtml}
                 `;
                 container.appendChild(card);
             });

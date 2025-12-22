@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情侣信息管理后台</title>
+    <link rel="stylesheet" href="manage.css">
+</head>
+<body>
+    <div class="container">
+        <h1>情侣信息管理后台</h1>
+        
+        <div id="authSection" class="auth-section">
+            <h2>管理员登录</h2>
+            <div class="form-group">
+                <label for="adminPassword">管理员密码：</label>
+                <input type="password" id="adminPassword" placeholder="请输入管理员密码">
+            </div>
+            <button id="loginBtn" class="btn primary">登录</button>
+        </div>
+        
+        <div id="mainSection" class="hidden">
+            <h2>添加新情侣信息</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="maleName">男方姓名：</label>
+                    <input type="text" id="maleName" required>
+                </div>
+                <div class="form-group">
+                    <label for="maleQQ">男方QQ：</label>
+                    <input type="text" id="maleQQ" required>
+                </div>
+                <div class="form-group">
+                    <label for="maleBirth">男方生日：</label>
+                    <input type="datetime-local" id="maleBirth" required>
+                </div>
+                <div class="form-group">
+                    <label for="femaleName">女方姓名：</label>
+                    <input type="text" id="femaleName" required>
+                </div>
+                <div class="form-group">
+                    <label for="femaleQQ">女方QQ：</label>
+                    <input type="text" id="femaleQQ" required>
+                </div>
+                <div class="form-group">
+                    <label for="femaleBirth">女方生日：</label>
+                    <input type="datetime-local" id="femaleBirth" required>
+                </div>
+                <div class="form-group">
+                    <label for="anniversary">纪念日：</label>
+                    <input type="datetime-local" id="anniversary" required>
+                </div>
+                <button type="submit" class="btn success">添加情侣</button>
+            </form>
+            
+            <div class="data-list">
+                <h2>现有情侣信息</h2>
+                <div id="dataList"></div>
+            </div>
+        </div>
+        
+        <a href="index.html" class="btn warning">返回首页</a>
+    </div>
+
+    <script>
+        // 使用你的 Worker URL 替换这里的地址
+        const CF_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/data';
+        const ADD_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/add';
+        const UPDATE_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/update/';
+        const DELETE_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/delete/';
+        const ADMIN_PASSWORD = 'xiaozhou';
+        
+        const authSection = document.getElementById('authSection');
+        const mainSection = document.getElementById('mainSection');
+        const loginBtn = document.getElementById('loginBtn');
+        const adminPasswordInput = document.getElementById('adminPassword');
+        const addForm = document.getElementById('addForm');
+        const dataList = document.getElementById('dataList');
+        
+        loginBtn.addEventListener('click', () => {
+            const password = adminPasswordInput.value;
+            if (password === ADMIN_PASSWORD) {
+                authSection.classList.add('hidden');
+                mainSection.classList.remove('hidden');
+                loadData();
+            } else {
+                alert('密码错误！');
+            }
+        });
+        
+        addForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newCouple = {
+                male: {
+                    name: document.getElementById('maleName').value,
+                    qq: document.getElementById('maleQQ').value,
+                    birth: formatDateTime(document.getElementById('maleBirth').value)
+                },
+                female: {
+                    name: document.getElementById('femaleName').value,
+                    qq: document.getElementById('femaleQQ').value,
+                    birth: formatDateTime(document.getElementById('femaleBirth').value)
+                },
+                anniversary: formatDateTime(document.getElementById('anniversary').value)
+            };
+            
+            try {
+                const response = await fetch(`${ADD_API_URL}?password=xiaozhou`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newCouple)
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    addForm.reset();
+                    loadData();
+                    alert('情侣信息添加成功！');
+                } else {
+                    alert('添加失败：' + result.error);
+                }
+            } catch (error) {
+                alert('添加失败：' + error.message);
+            }
+        });
+        
+        async function loadData() {
+            try {
+                const response = await fetch(CF_API_URL);
+                const data = await response.json();
+                
+                renderDataList(data);
+            } catch (error) {
+                alert('加载数据失败：' + error.message);
+            }
+        }
+        
+        function renderDataList(data) {
+            dataList.innerHTML = '';
+            
+            data.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'data-item';
+                itemDiv.innerHTML = `
+                    <h3>${item.male.name} & ${item.female.name}</h3>
+                    <p><strong>ID:</strong> ${item.id}</p>
+                    <p><strong>男方:</strong> ${item.male.name} (QQ: ${item.male.qq}, 生日: ${item.male.birth})</p>
+                    <p><strong>女方:</strong> ${item.female.name} (QQ: ${item.female.qq}, 生日: ${item.female.birth})</p>
+                    <p><strong>纪念日:</strong> ${item.anniversary}</p>
+                    <div class="data-actions">
+                        <button class="btn warning" onclick="editItem(${item.id})">编辑</button>
+                        <button class="btn danger" onclick="deleteItem(${item.id})">删除</button>
+                    </div>
+                `;
+                dataList.appendChild(itemDiv);
+            });
+        }
+        
+        window.editItem = async (id) => {
+            alert('编辑功能需要在完整版本中实现，当前版本仅支持查看和删除');
+        };
+        
+        window.deleteItem = async (id) => {
+            if (!confirm('确定要删除这条情侣信息吗？')) return;
+            
+            try {
+                const response = await fetch(`${DELETE_API_URL}${id}?password=xiaozhou`, {
+                    method: 'DELETE'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    loadData();
+                    alert('删除成功！');
+                } else {
+                    alert('删除失败：' + result.error);
+                }
+            } catch (error) {
+                alert('删除失败：' + error.message);
+            }
+        };
+        
+        function formatDateTime(datetimeStr) {
+            if (!datetimeStr) return '0000-00-00 00:00';
+            const date = new Date(datetimeStr);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}`;
+        }
+    </script>
+</body>
+</html>
