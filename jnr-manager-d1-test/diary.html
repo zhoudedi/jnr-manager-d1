@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">📖 数据加载中...</title>
+    <link rel="stylesheet" href="diary.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="diaryTitle">👫 数据加载中...</h1>
+        
+        <div id="content">
+            <div class="loading" id="loading">数据加载中...</div>
+            <div class="error-message" id="errorMessage" style="display:none;">数据获取失败</div>
+            
+            <div id="diaryEntries" style="display:none;">
+                <div class="diary-entry">
+                    <div class="date">📅 2023年10月1日</div>
+                    <p>今天是我们第一次一起看海的日子，虽然下着小雨，但靠在一起的感觉真的很温暖。</p>
+                </div>
+                
+                <div class="diary-entry">
+                    <div class="date">📅 2024年02月14日</div>
+                    <p>情人节收到了超大的玫瑰花束，被你宠成小朋友啦！</p>
+                </div>
+
+                <button class="add-btn" onclick="alert('日记功能演示：这里可以记录你们的新故事！')">➕ 记录新故事</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const coupleId = parseInt(urlParams.get('id')) || 1;
+
+        async function loadCoupleData() {
+            try {
+                // 显示加载状态
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                document.getElementById('diaryEntries').style.display = 'none';
+                
+                // 使用你的 Worker URL 替换这里的地址 - 使用新的万能API接口
+                const response = await fetch(`https://jnr-api.lvxin.xn--6qq986b3xl/api/data/${coupleId}`);
+                if (!response.ok) throw new Error('文件未找到，请检查数据是否存在');
+                const couple = await response.json();
+                
+                if (couple && !couple.error) {
+                    const title = `${couple.male.name} & ${couple.female.name} 的恋爱日记`;
+                    document.getElementById('diaryTitle').textContent = `👫 ${title}`;
+                    document.getElementById('pageTitle').textContent = `📖 ${title}`;
+                    
+                    // 隐藏加载状态，显示内容
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    document.getElementById('diaryEntries').style.display = 'block';
+                } else {
+                    // 显示错误信息
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('diaryEntries').style.display = 'none';
+                    
+                    document.getElementById('diaryTitle').textContent = "👫 未找到对应情侣信息";
+                    document.getElementById('pageTitle').textContent = "📖 未找到对应情侣信息";
+                }
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                // 显示错误信息
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('diaryEntries').style.display = 'none';
+                
+                document.getElementById('diaryTitle').textContent = "👫 数据加载失败";
+                document.getElementById('pageTitle').textContent = "📖 数据加载失败";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCoupleData);
+    </script>
+</body>
+</html>

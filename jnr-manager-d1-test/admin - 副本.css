@@ -1,0 +1,91 @@
+/* manage.css */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8f9fa;
+    padding: 20px;
+}
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+h1 {
+    text-align: center;
+    color: #d63384;
+    margin-bottom: 30px;
+}
+.auth-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    text-align: center;
+}
+.btn.success { background: #28a745; }
+.btn.danger { background: #dc3545; }
+.btn.warning { background: #ffc107; color: #212529; }
+.btn.primary { background: #007bff; }
+.data-list {
+    margin-top: 30px;
+}
+.data-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background: #f8f9fa;
+}
+.data-actions {
+    margin-top: 10px;
+    text-align: right;
+}
+.hidden {
+    display: none;
+}
+.error {
+    color: red;
+    padding: 10px;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.success {
+    color: green;
+    padding: 10px;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}

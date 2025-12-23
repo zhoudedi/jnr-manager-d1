@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 生日 & 💍 纪念日记录</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0icmdiKDIyMSwgMTAzLCAxMzEpIj48cGF0aCBkPSJNMTIsMkM4LjEsMiA1LDUuMSA1LDkgYzAsMi40IDEuMiA0LjQgMyw1LjcgQzguNiw5LjQgOS4zLDggMTAuNSw3LjIgQzExLjcsNi4xIDEzLjUsNiAxNSw2IDYuNSwxNS41IDksMjIgMTIsMjJDMTUuNSwyMiAyMCwxNy41IDIwLDljMC0zLjktMy4xLTctNy03eiIvPjwvc3ZnPg==">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="season-effects" id="seasonEffects"></div>
+    
+    <h1>🎂 生日 & 💍 纪念日记录</h1>
+    <div class="couple-grid" id="container">
+        <div class="loading-container">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <script>
+        // 使用你的 Worker URL 替换这里的地址
+        const CF_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/data';
+        
+        async function loadData() {
+            try {
+                const response = await fetch(CF_API_URL);
+                if (!response.ok) throw new Error('无法获取数据');
+                const data = await response.json();
+                renderIndex(data);
+                setInterval(() => renderIndex(data), 60 * 60 * 1000);
+            } catch (error) {
+                document.getElementById('container').innerHTML = 
+                `<div class="error-message">加载失败: ${error.message}</div>`;
+            }
+        }
+
+        function isInvalidDate(dateStr) {
+            return dateStr.includes('0000-00-00') || dateStr.includes('00-00-00');
+        }
+
+        function calculateAge(birthStr) {
+            if (isInvalidDate(birthStr)) {
+                return "未知";
+            }
+            
+            const birth = new Date(birthStr.split(' ')[0]);
+            const nowDate = new Date();
+            let age = nowDate.getFullYear() - birth.getFullYear();
+            const m = nowDate.getMonth() - birth.getMonth();
+            if (m < 0 || (m === 0 && nowDate.getDate() < birth.getDate())) age--;
+            return age;
+        }
+
+        function getBirthdayElement(person) {
+            if (isInvalidDate(person.birth)) {
+                return `<span class="countdown-text">🎂 生日信息未知</span>`;
+            }
+            
+            const nowDate = new Date();
+            const [datePart, timePart] = person.birth.split(' ');
+            const [_, birthMonth, birthDay] = datePart.split('-').map(Number);
+            const [birthHour = 0] = (timePart || '00:00').split(':').map(Number);
+
+            const isBirthdayToday = 
+                nowDate.getMonth() === birthMonth - 1 &&
+                nowDate.getDate() === birthDay &&
+                nowDate.getHours() >= birthHour;
+
+            if (isBirthdayToday) {
+                const linkUrl = `birthday.html?name=${encodeURIComponent(person.name)}`;
+                return `<a href="${linkUrl}" class="countdown-text birthday-today">🎉生日快乐!</a>`;
+            }
+
+            let nextBirthYear = nowDate.getFullYear();
+            let nextBirth = new Date(nextBirthYear, birthMonth - 1, birthDay, birthHour, 0);
+            if (nextBirth <= nowDate) {
+                nextBirth.setFullYear(nextBirthYear + 1);
+            }
+
+            const diffMs = nextBirth - nowDate;
+            const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const days = Math.floor(totalHours / 24);
+            const hours = totalHours % 24;
+
+            return `<span class="countdown-text">🎂 距离生日还有${days}天${hours}小时</span>`;
+        }
+
+        function getAnniversaryStatus(startStr) {
+            if (isInvalidDate(startStr)) {
+                return `💔 还没有伴侣吧`;
+            }
+            
+            const nowDate = new Date();
+            const startDate = new Date(startStr);
+
+            const diffMs = nowDate - startDate;
+            const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            const isAnniversaryToday =
+                nowDate.getMonth() === startDate.getMonth() &&
+                nowDate.getDate() === startDate.getDate();
+
+            if (isAnniversaryToday) {
+                const years = nowDate.getFullYear() - startDate.getFullYear();
+                return `🎉 ${years}周年纪念日快乐！`;
+            }
+
+            return `💍 我们已相爱${totalDays}天`;
+        }
+
+        function renderIndex(couples) {
+            const container = document.getElementById('container');
+            container.innerHTML = '';
+
+            couples.forEach(c => {
+                const maleHtml = getBirthdayElement(c.male);
+                const femaleHtml = getBirthdayElement(c.female);
+                const anniStatus = getAnniversaryStatus(c.anniversary);
+
+                const card = document.createElement('div');
+                card.className = 'couple-card';
+                
+                // 检查是否有伴侣
+                const hasPartner = !isInvalidDate(c.anniversary);
+                
+                // 生成按钮的HTML
+                let buttonsHtml = '';
+                if (hasPartner) {
+                    buttonsHtml = `
+                        <div class="btn-group">
+                            <a href="diary.html?id=${c.id}" class="btn diary">📖 查看恋爱日记</a>
+                            <a href="LoveTree.html?id=${c.id}" class="btn lovetree">🌳 爱情树</a>
+                        </div>
+                    `;
+                } else {
+                    buttonsHtml = `
+                        <div class="btn-group">
+                            <button class="btn diary disabled-btn" onclick="alert('💔 还没有伴侣，不支持访问')">📖 查看恋爱日记</button>
+                            <button class="btn lovetree disabled-btn" onclick="alert('💔 还没有伴侣，不支持访问')">🌳 爱情树</button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="couple-header">👦 ${c.male.name} & 👧 ${c.female.name}</div>
+                    <div class="person-item">
+                        <div class="avatar"><img src="https://q1.qlogo.cn/g?b=qq&nk=${c.male.qq}&s=100" alt="头像"></div>
+                        <div class="info-box">
+                            <span class="name">♂${c.male.name}</span>
+                            <div class="info-row">${maleHtml}</div>
+                            <div class="info-row">📅 当前${calculateAge(c.male.birth)} 岁</div>
+                        </div>
+                    </div>
+                    <div class="person-item">
+                        <div class="avatar"><img src="https://q1.qlogo.cn/g?b=qq&nk=${c.female.qq}&s=100" alt="头像"></div>
+                        <div class="info-box">
+                            <span class="name">♀${c.female.name}</span>
+                            <div class="info-row">${femaleHtml}</div>
+                            <div class="info-row">📅 当前${calculateAge(c.female.birth)} 岁</div>
+                        </div>
+                    </div>
+                    <div class="anniversary-box">${anniStatus}</div>
+                    ${buttonsHtml}
+                `;
+                container.appendChild(card);
+            });
+
+            // 添加 & 修改功能卡片
+            const addEditCard = document.createElement('div');
+            addEditCard.className = 'couple-card';
+            addEditCard.innerHTML = `
+                <div class="couple-header" style="background: linear-gradient(45deg, #28a745, #fd7e14);">
+                    <span style="color: white; font-weight: bold;">➕ 添加 & ✏️ 修改情侣信息</span>
+                </div>
+                <div class="person-item">
+                    <div class="avatar" style="display: flex; justify-content: center; align-items: center;">
+                        <span style="font-size: 30px;">👤</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="name">添加新情侣</span>
+                        <div class="info-row">
+                            <span class="countdown-text">点击下方按钮添加新的情侣信息</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="countdown-text">需要验证密码才能操作</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="avatar" style="display: flex; justify-content: center; align-items: center;">
+                        <span style="font-size: 30px;">🔧</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="name">修改/删除现有信息</span>
+                        <div class="info-row">
+                            <span class="countdown-text">选择情侣后可修改或删除信息</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="countdown-text">需要验证密码才能操作</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="add.html" class="btn" style="background: #28a745;">➕ 添加情侣信息</a>
+                <a href="manage.html" class="btn" style="background: #ffc107; color: #212529; margin-top: 10px;">🗑️ 管理情侣信息</a>
+            `;
+            container.appendChild(addEditCard);
+        }
+
+        // 四季特效系统 - 最上层版本
+        class SeasonEffects {
+            constructor() {
+                this.container = document.getElementById('seasonEffects');
+                this.currentSeason = null;
+                this.particles = [];
+                this.particleCount = 50; // 增加粒子数量
+                this.init();
+            }
+
+            init() {
+                this.updateSeason();
+                setInterval(() => this.updateSeason(), 60000); // 每分钟检查一次季节变化
+            }
+
+            getSeason() {
+                const now = new Date();
+                const month = now.getMonth() + 1; // 月份从0开始，需要+1
+
+                if (month >= 3 && month <= 5) return 'spring'; // 春天 3-5月
+                if (month >= 6 && month <= 8) return 'summer'; // 夏天 6-8月
+                if (month >= 9 && month <= 11) return 'autumn'; // 秋天 9-11月
+                return 'winter'; // 冬天 12-2月
+            }
+
+            updateSeason() {
+                const newSeason = this.getSeason();
+                
+                if (newSeason !== this.currentSeason) {
+                    this.currentSeason = newSeason;
+                    this.clearParticles();
+                    this.createParticles();
+                }
+            }
+
+            clearParticles() {
+                this.particles.forEach(particle => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                });
+                this.particles = [];
+            }
+
+            createParticles() {
+                for (let i = 0; i < this.particleCount; i++) {
+                    const particle = this.createParticle();
+                    this.container.appendChild(particle);
+                    this.particles.push(particle);
+                    
+                    // 随机延迟创建，避免同时出现
+                    setTimeout(() => {
+                        particle.classList.add('fade-in');
+                    }, Math.random() * 3000);
+                }
+                
+                // 持续创建新粒子，保持效果
+                this.startContinuousCreation();
+            }
+            
+            startContinuousCreation() {
+                // 持续创建新粒子，替换消失的粒子
+                setInterval(() => {
+                    if (this.particles.length < this.particleCount) {
+                        const particle = this.createParticle();
+                        this.container.appendChild(particle);
+                        this.particles.push(particle);
+                        particle.classList.add('fade-in');
+                    }
+                }, 300);
+            }
+
+            createParticle() {
+                const particle = document.createElement('div');
+                particle.className = `season-particle ${this.getParticleClass()}`;
+                
+                // 随机位置
+                const left = Math.random() * 100;
+                particle.style.left = `${left}%`;
+                
+                // 随机动画持续时间
+                const duration = this.getParticleDuration();
+                particle.style.animationDuration = `${duration}s`;
+                
+                // 随机大小
+                const size = 0.8 + Math.random() * 1.2;
+                particle.style.transform = `scale(${size})`;
+                
+                // 随机透明度
+                particle.style.opacity = 0.6 + Math.random() * 0.3;
+                
+                // 随机旋转方向和速度
+                const rotationDirection = Math.random() > 0.5 ? 1 : -1;
+                particle.style.setProperty('--rotation-direction', rotationDirection);
+                
+                // 重新开始动画
+                setTimeout(() => {
+                    particle.style.animation = 'none';
+                    setTimeout(() => {
+                        particle.style.animation = `${this.getParticleAnimation()} ${duration}s linear infinite`;
+                    }, 10);
+                }, Math.random() * 5000);
+
+                return particle;
+            }
+
+            getParticleClass() {
+                switch(this.currentSeason) {
+                    case 'spring': return 'petal';
+                    case 'summer': return 'raindrop';
+                    case 'autumn': return 'leaf';
+                    case 'winter': return 'snowflake';
+                    default: return 'snowflake';
+                }
+            }
+
+            getParticleDuration() {
+                switch(this.currentSeason) {
+                    case 'spring': return 6 + Math.random() * 4; // 6-10秒
+                    case 'summer': return 1.5 + Math.random() * 1.5; // 1.5-3秒
+                    case 'autumn': return 4 + Math.random() * 4; // 4-8秒
+                    case 'winter': return 4 + Math.random() * 4; // 4-8秒
+                    default: return 6;
+                }
+            }
+
+            getParticleAnimation() {
+                switch(this.currentSeason) {
+                    case 'spring': return 'fall-petal';
+                    case 'summer': return 'fall-rain';
+                    case 'autumn': return 'fall-leaf';
+                    case 'winter': return 'fall-snow';
+                    default: return 'fall-snow';
+                }
+            }
+        }
+
+        // 初始化四季特效
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            new SeasonEffects();
+        });
+    </script>
+</body>
+</html>

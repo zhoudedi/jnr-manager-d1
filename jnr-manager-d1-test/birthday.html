@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐</title>
+    <link rel="stylesheet" href="birthday.css">
+</head>
+<body>
+    <div class="envelope">
+        <h1 id="title">🎉 生日快乐！</h1>
+        <div class="cake">🎂</div>
+        <p class="wish">
+            亲爱的 <span id="userName" style="font-weight: bold; font-size: 1.3em;"></span>：
+            <br><br>
+            愿你在这个特别的日子里，被爱和温暖包围。
+            <br>
+            愿你永远健康、快乐、平安顺遂！
+            <br><br>
+            ❤️ 来自大家的祝福 ❤️
+        </p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name') || '亲爱的朋友';
+        
+        document.getElementById('userName').textContent = name;
+        document.title = `${name} - 生日快乐`;
+    </script>
+</body>
+</html>
