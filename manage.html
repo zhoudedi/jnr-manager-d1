@@ -241,12 +241,8 @@
                 namesDiv.className = 'couple-names';
                 namesDiv.textContent = `${item.male.name} & ${item.female.name}`;
                 
-                const qqDiv = document.createElement('div');
-                qqDiv.className = 'couple-qq';
-                qqDiv.textContent = `QQ: ${item.male.qq} / ${item.female.qq}`;
                 
                 infoDiv.appendChild(namesDiv);
-                infoDiv.appendChild(qqDiv);
                 optionDiv.appendChild(infoDiv);
                 
                 optionDiv.addEventListener('click', () => {
