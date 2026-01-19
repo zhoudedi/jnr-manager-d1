@@ -3,196 +3,1162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>情侣信息管理后台</title>
-    <link rel="stylesheet" href="manage.css">
+    <title>🔐 管理员后台</title>
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     <div class="container">
-        <h1>情侣信息管理后台</h1>
-        
-        <div id="authSection" class="auth-section">
-            <h2>管理员登录</h2>
-            <div class="form-group">
-                <label for="adminPassword">管理员密码：</label>
-                <input type="password" id="adminPassword" placeholder="请输入管理员密码">
+        <div class="header-wrapper">
+            <h1>🔐 管理员后台</h1>
+            <div class="admin-panel">
+                <button id="adminPanelBtn" class="admin-panel-btn hidden">
+                    👤 管理员
+                    <span class="dropdown
+                </button>
+                <div id="adminDropdown" class="admin-dropdown hidden">
+                    <div class="dropdown-header">
+                        <span id="adminUsername">管理员</span>
+                    </div>
+                    <button id="changePasswordBtn" class="dropdown-item">🔑 修改密码</button>
+                    <button id="logoutBtn" class="dropdown-item danger">🚪 退出登录</button>
+                </div>
             </div>
-            <button id="loginBtn" class="btn primary">登录</button>
-        </div>
-        
-        <div id="mainSection" class="hidden">
-            <h2>添加新情侣信息</h2>
-            <form id="addForm">
-                <div class="form-group">
-                    <label for="maleName">男方姓名：</label>
-                    <input type="text" id="maleName" required>
-                </div>
-                <div class="form-group">
-                    <label for="maleQQ">男方QQ：</label>
-                    <input type="text" id="maleQQ" required>
-                </div>
-                <div class="form-group">
-                    <label for="maleBirth">男方生日：</label>
-                    <input type="datetime-local" id="maleBirth" required>
-                </div>
-                <div class="form-group">
-                    <label for="femaleName">女方姓名：</label>
-                    <input type="text" id="femaleName" required>
-                </div>
-                <div class="form-group">
-                    <label for="femaleQQ">女方QQ：</label>
-                    <input type="text" id="femaleQQ" required>
-                </div>
-                <div class="form-group">
-                    <label for="femaleBirth">女方生日：</label>
-                    <input type="datetime-local" id="femaleBirth" required>
-                </div>
-                <div class="form-group">
-                    <label for="anniversary">纪念日：</label>
-                    <input type="datetime-local" id="anniversary" required>
-                </div>
-                <button type="submit" class="btn success">添加情侣</button>
-            </form>
+            <!-- 主管理界面 -->
+        <div id="adminSection" class="hidden">
+            <div class="admin-tabs">
+                <button id="addTabBtn" class="tab-btn active">➕ 添加情侣信息</button>
+                <button id="manageTabBtn" class="tab-btn">🗑️ 管理情侣信息</button>
+            </div>
             
-            <div class="data-list">
-                <h2>现有情侣信息</h2>
-                <div id="dataList"></div>
+            <!-- 添加情侣信息 -->
+            <div id="addSection" class="tab-content active">
+                <h2>💕 添加情侣信息</h2>
+                
+                <form id="addForm">
+                    <div class="form-group">
+                        <label>👤 我的性别：</label>
+                        <div class="checkbox-group">
+                            <input type="radio" id="genderMale" name="gender" value="male" required>
+                            <label for="genderMale">♂ 男性</label>
+                            <input type="radio" id="genderFemale" name="gender" value="female" required>
+                            <label for="genderFemale">♀ 女性</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="myName">📝 我的名称：</label>
+                        <input type="text" id="myName" name="myName" placeholder="请输入您的名称" required autocomplete="name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="myQQ">💬 我的QQ号码：</label>
+                        <input type="text" id="myQQ" name="myQQ" placeholder="请输入您的QQ号码" required autocomplete="off">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="myBirth">🎂 我的生日：</label>
+                        <input type="datetime-local" id="myBirth" name="myBirth" required autocomplete="bday">
+                    </div>
+                    
+                    <div class="partner-section">
+                        <h3>💖 伴侣信息</h3>
+                        
+                        <div class="no-partner-checkbox">
+                            <label for="noPartner">💔 我是单身（无伴侣）</label>
+                            <input type="checkbox" id="noPartner" name="noPartner" value="1" checked>
+                        </div>
+                        
+                        <div id="partnerInfo">
+                            <div class="form-group">
+                                <label for="partnerName">👤 伴侣名称：</label>
+                                <input type="text" id="partnerName" name="partnerName" placeholder="请输入伴侣名称" autocomplete="name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="partnerQQ">💬 伴侣QQ号码：</label>
+                                <input type="text" id="partnerQQ" name="partnerQQ" placeholder="请输入伴侣QQ号码" autocomplete="off">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="partnerBirth">🎂 伴侣生日：</label>
+                                <input type="datetime-local" id="partnerBirth" name="partnerBirth" autocomplete="bday">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="anniversary">💍 恋爱纪念日：</label>
+                                <input type="datetime-local" id="anniversary" name="anniversary" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="duplicateWarning" class="duplicate-warning hidden">
+                        <strong>⚠️ 警告：</strong><span id="warningText"></span>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">➕ 添加情侣信息</button>
+                </form>
+                
+                <div class="back-btn-container">
+                    <a href="index.html" class="back-btn" id="addBackBtn">🏠 返回首页</a>
+                </div>
+            </div>
+            
+            <!-- 管理情侣信息 -->
+            <div id="manageSection" class="tab-content hidden">
+                <h2>🗑️ 管理情侣信息</h2>
+                
+                <div id="selectSection" class="select-section">
+                    <h2>📋 选择要管理的情侣信息</h2>
+                    <div class="form-group">
+                        <label>选择情侣：</label>
+                        <div class="custom-select-wrapper">
+                            <div class="custom-select-header">
+                                <input type="text" id="coupleSearchInput" class="custom-select-search" placeholder="搜索情侣（名称或QQ）...">
+                                <span class="search-icon">🔍</span>
+                            </div>
+                            <div id="coupleDropdown" class="custom-select-dropdown hidden">
+                                <div id="coupleOptions" class="custom-select-options">
+                                    <div class="custom-select-loading">数据加载中...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="selectBtn" class="btn primary">✅ 选择</button>
+                </div>
+                
+                <div id="editSection" class="hidden">
+                    <h2>✏️ 编辑情侣信息</h2>
+                    
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label>👤 男方信息</label>
+                            <div class="sub-form">
+                                <input type="text" id="maleName" placeholder="男方姓名" required>
+                                <input type="text" id="maleQQ" placeholder="男方QQ号码" required>
+                                <input type="datetime-local" id="maleBirth" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>👩 女方信息</label>
+                            <div class="sub-form">
+                                <input type="text" id="femaleName" placeholder="女方姓名" required>
+                                <input type="text" id="femaleQQ" placeholder="女方QQ号码" required>
+                                <input type="datetime-local" id="femaleBirth" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>💍 恋爱纪念日</label>
+                            <input type="datetime-local" id="editanniversary" required>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button type="submit" class="btn success" id="saveBtn">💾 保存修改</button>
+                            <button type="button" id="deleteBtn" class="btn danger">🗑️ 删除记录</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="back-btn-container">
+                    <a href="index.html" class="back-btn" id="manageBackBtn">🏠 返回首页</a>
+                </div>
+            </div>
+        </div>
+        <!-- 登录表单 -->
+        <div id="loginSection" class="">
+            <h2>🔑 管理员登录</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">用户名：</label>
+                    <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码：</label>
+                    <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="submit-btn" id="loginBtn">登录</button>
+            </form>
+        </div>
+        </div>
+        
+        <!-- 修改密码弹窗 -->
+        <div id="passwordModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🔑 修改管理员密码</h3>
+                    <button class="modal-close" id="closePasswordModal">&times;</button>
+                </div>
+                <form id="changePasswordForm" class="modal-body">
+                    <div class="form-group">
+                        <label for="oldPassword">旧密码：</label>
+                        <input type="password" id="oldPassword" name="oldPassword" placeholder="请输入旧密码" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">新密码：</label>
+                        <input type="password" id="newPassword" name="newPassword" placeholder="请输入新密码" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">确认密码：</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="请再次输入新密码" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn success">💾 确认修改</button>
+                        <button type="button" class="btn" id="cancelPasswordBtn">取消</button>
+                    </div>
+                </form>
             </div>
         </div>
         
-        <a href="index.html" class="btn warning">返回首页</a>
+        
+        
+        
+    </div>
+
+    <!-- 加载指示器 -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在提交数据，请稍候...</p>
+            <p id="retryMessage" class="hidden">网络较慢，正在重试中...</p>
+        </div>
     </div>
 
     <script>
         // 使用你的 Worker URL 替换这里的地址
         const CF_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/data';
-        const ADD_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/add';
-        const UPDATE_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/update/';
-        const DELETE_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/delete/';
-        const ADMIN_PASSWORD = 'xiaozhou';
+        const ADD_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/adds';
+        const UPDATE_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/updates/';
+        const DELETE_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/deletes/';
+        const LOGIN_API_URL = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/login';
         
-        const authSection = document.getElementById('authSection');
-        const mainSection = document.getElementById('mainSection');
-        const loginBtn = document.getElementById('loginBtn');
-        const adminPasswordInput = document.getElementById('adminPassword');
+        // DOM元素
+        const loginSection = document.getElementById('loginSection');
+        const adminSection = document.getElementById('adminSection');
+        const loginForm = document.getElementById('loginForm');
+        const addTabBtn = document.getElementById('addTabBtn');
+        const manageTabBtn = document.getElementById('manageTabBtn');
+        const addSection = document.getElementById('addSection');
+        const manageSection = document.getElementById('manageSection');
         const addForm = document.getElementById('addForm');
-        const dataList = document.getElementById('dataList');
+        const addBackBtn = document.getElementById('addBackBtn');
+        const selectSection = document.getElementById('selectSection');
+        const editSection = document.getElementById('editSection');
+        const coupleSearchInput = document.getElementById('coupleSearchInput');
+        const coupleDropdown = document.getElementById('coupleDropdown');
+        const coupleOptions = document.getElementById('coupleOptions');
+        const selectBtn = document.getElementById('selectBtn');
+        const editForm = document.getElementById('editForm');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const manageBackBtn = document.getElementById('manageBackBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const retryMessage = document.getElementById('retryMessage');
         
-        loginBtn.addEventListener('click', () => {
-            const password = adminPasswordInput.value;
-            if (password === ADMIN_PASSWORD) {
-                authSection.classList.add('hidden');
-                mainSection.classList.remove('hidden');
-                loadData();
-            } else {
-                alert('密码错误！');
+        // 全局变量
+        let currentCouple = null;
+        let isSubmitting = false;
+        let authToken = '';
+        let allCouples = [];
+        let selectedCoupleId = null;
+        
+        // 延迟函数
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        // 带重试机制的fetch请求
+        async function fetchWithRetry(url, options, retries = 3, delayMs = 2000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒超时
+                    
+                    const response = await fetch(url, {
+                        ...options,
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    // 如果请求成功，返回结果
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                    
+                    // 如果服务器返回错误，抛出错误
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } catch (error) {
+                    console.log(`请求尝试 ${i + 1} 失败:`, error.message);
+                    
+                    // 如果是最后一次尝试，抛出错误
+                    if (i === retries - 1) {
+                        throw error;
+                    }
+                    
+                    // 显示重试消息
+                    retryMessage.classList.remove('hidden');
+                    
+                    // 等待一段时间后重试
+                    await delay(delayMs);
+                }
             }
-        });
+        }
         
-        addForm.addEventListener('submit', async (e) => {
+        // 检查登录状态
+        function checkLoginStatus() {
+            const token = localStorage.getItem('adminToken');
+            const username = localStorage.getItem('adminUsername');
+            if (token) {
+                authToken = token;
+                loginSection.classList.add('hidden');
+                adminSection.classList.remove('hidden');
+                document.getElementById('adminPanelBtn').classList.remove('hidden');
+                document.getElementById('adminUsername').textContent = username || '管理员';
+            }
+            // 清空搜索框和下拉列表
+            coupleSearchInput.value = '';
+            coupleDropdown.classList.add('hidden');
+        }
+        
+        // 管理员登录
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const newCouple = {
-                male: {
-                    name: document.getElementById('maleName').value,
-                    qq: document.getElementById('maleQQ').value,
-                    birth: formatDateTime(document.getElementById('maleBirth').value)
-                },
-                female: {
-                    name: document.getElementById('femaleName').value,
-                    qq: document.getElementById('femaleQQ').value,
-                    birth: formatDateTime(document.getElementById('femaleBirth').value)
-                },
-                anniversary: formatDateTime(document.getElementById('anniversary').value)
-            };
+            // 防重复提交检查
+            if (isSubmitting) {
+                return;
+            }
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 设置提交状态，防止重复提交
+            isSubmitting = true;
+            const originalText = document.getElementById('loginBtn').textContent;
+            document.getElementById('loginBtn').textContent = '⏳ 登录中...';
+            document.getElementById('loginBtn').disabled = true;
             
             try {
-                const response = await fetch(`${ADD_API_URL}?password=xiaozhou`, {
+                const response = await fetch(LOGIN_API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(newCouple)
+                    body: JSON.stringify({ username, password })
                 });
+                
                 const result = await response.json();
                 
                 if (result.success) {
-                    addForm.reset();
-                    loadData();
-                    alert('情侣信息添加成功！');
+                    authToken = result.token;
+                    localStorage.setItem('adminToken', authToken);
+                    localStorage.setItem('adminUsername', username); // 保存用户名
+                    loginSection.classList.add('hidden');
+                    adminSection.classList.remove('hidden');
+                    document.getElementById('adminPanelBtn').classList.remove('hidden');
+                    document.getElementById('adminUsername').textContent = username;
                 } else {
-                    alert('添加失败：' + result.error);
+                    alert('登录失败：' + result.error);
                 }
             } catch (error) {
-                alert('添加失败：' + error.message);
+                alert('登录请求失败：' + error.message);
+            } finally {
+                // 重置提交状态
+                isSubmitting = false;
+                document.getElementById('loginBtn').textContent = originalText;
+                document.getElementById('loginBtn').disabled = false;
             }
         });
         
-        async function loadData() {
+        // 切换标签页
+        addTabBtn.addEventListener('click', () => {
+            // 移除所有按钮的激活状态
+            addTabBtn.classList.add('active');
+            manageTabBtn.classList.remove('active');
+            // 显示添加页面，隐藏管理页面
+            addSection.classList.remove('hidden');
+            addSection.classList.add('active');
+            manageSection.classList.add('hidden');
+            manageSection.classList.remove('active');
+        });
+        
+        manageTabBtn.addEventListener('click', () => {
+            // 移除所有按钮的激活状态
+            manageTabBtn.classList.add('active');
+            addTabBtn.classList.remove('active');
+            // 显示管理页面，隐藏添加页面
+            manageSection.classList.remove('hidden');
+            manageSection.classList.add('active');
+            addSection.classList.add('hidden');
+            addSection.classList.remove('active');
+            // 重置选择状态
+            selectedCoupleId = null;
+            coupleSearchInput.value = '';
+            selectSection.classList.remove('hidden');
+            editSection.classList.add('hidden');
+            loadCoupleList();
+        });
+        
+        // 控制伴侣信息显示/隐藏
+        const noPartnerCheckbox = document.getElementById('noPartner');
+        const partnerInfo = document.getElementById('partnerInfo');
+        
+        noPartnerCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                partnerInfo.classList.add('hidden');
+            } else {
+                partnerInfo.classList.remove('hidden');
+            }
+            
+            // 隐藏重复警告（如果有的话）
+            document.getElementById('duplicateWarning').classList.add('hidden');
+        });
+        
+        // 初始隐藏伴侣信息
+        partnerInfo.classList.add('hidden');
+        
+        // 检查QQ是否已存在的函数
+        async function checkDuplicateQQ(myQQ, partnerQQ = null) {
             try {
                 const response = await fetch(CF_API_URL);
-                const data = await response.json();
+                const existingData = await response.json();
                 
-                renderDataList(data);
+                // 检查我的QQ是否已存在
+                const myQQExists = existingData.find(item => 
+                    item.male.qq === myQQ || item.female.qq === myQQ
+                );
+                
+                if (myQQExists) {
+                    return {
+                        duplicate: true,
+                        type: 'my',
+                        name: myQQExists.male.qq === myQQ ? myQQExists.male.name : myQQExists.female.name,
+                        existingQQ: myQQ
+                    };
+                }
+                
+                // 如果有伴侣信息，检查伴侣QQ是否已存在
+                if (partnerQQ) {
+                    const partnerQQExists = existingData.find(item => 
+                        item.male.qq === partnerQQ || item.female.qq === partnerQQ
+                    );
+                    
+                    if (partnerQQExists) {
+                        return {
+                            duplicate: true,
+                            type: 'partner',
+                            name: partnerQQExists.male.qq === partnerQQ ? partnerQQExists.male.name : partnerQQExists.female.name,
+                            existingQQ: partnerQQ
+                        };
+                    }
+                }
+                
+                return { duplicate: false };
             } catch (error) {
-                alert('加载数据失败：' + error.message);
+                console.error('检查重复QQ时出错:', error);
+                // 如果检查失败，仍然允许提交，但记录错误
+                return { duplicate: false, checkFailed: true };
             }
         }
         
-        function renderDataList(data) {
-            dataList.innerHTML = '';
+        // 监听QQ输入变化，实时检查重复
+        document.getElementById('myQQ').addEventListener('blur', async function() {
+            const myQQ = this.value.trim();
+            if (myQQ) {
+                const partnerQQ = document.getElementById('partnerQQ').value.trim();
+                const result = await checkDuplicateQQ(myQQ, partnerQQ);
+                
+                if (result.duplicate) {
+                    document.getElementById('duplicateWarning').classList.remove('hidden');
+                    const warningText = document.getElementById('warningText');
+                    if (result.type === 'my') {
+                        warningText.textContent = `您的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                    } else {
+                        warningText.textContent = `伴侣的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                    }
+                } else {
+                    document.getElementById('duplicateWarning').classList.add('hidden');
+                }
+            }
+        });
+        
+        document.getElementById('partnerQQ').addEventListener('blur', async function() {
+            const myQQ = document.getElementById('myQQ').value.trim();
+            const partnerQQ = this.value.trim();
             
-            data.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'data-item';
-                itemDiv.innerHTML = `
-                    <h3>${item.male.name} & ${item.female.name}</h3>
-                    <p><strong>ID:</strong> ${item.id}</p>
-                    <p><strong>男方:</strong> ${item.male.name} (QQ: ${item.male.qq}, 生日: ${item.male.birth})</p>
-                    <p><strong>女方:</strong> ${item.female.name} (QQ: ${item.female.qq}, 生日: ${item.female.birth})</p>
-                    <p><strong>纪念日:</strong> ${item.anniversary}</p>
-                    <div class="data-actions">
-                        <button class="btn warning" onclick="editItem(${item.id})">编辑</button>
-                        <button class="btn danger" onclick="deleteItem(${item.id})">删除</button>
-                    </div>
-                `;
-                dataList.appendChild(itemDiv);
+            if (partnerQQ) {
+                const result = await checkDuplicateQQ(myQQ, partnerQQ);
+                
+                if (result.duplicate) {
+                    document.getElementById('duplicateWarning').classList.remove('hidden');
+                    const warningText = document.getElementById('warningText');
+                    if (result.type === 'my') {
+                        warningText.textContent = `您的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                    } else {
+                        warningText.textContent = `伴侣的QQ号码(${result.existingQQ})已存在于系统中，名为"${result.name}"的记录。无法重复添加。`;
+                    }
+                } else {
+                    document.getElementById('duplicateWarning').classList.add('hidden');
+                }
+            }
+        });
+        
+        // 表单提交处理
+        document.getElementById('addForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // 防重复提交检查
+            if (isSubmitting) {
+                return;
+            }
+            
+            const formData = new FormData(this);
+            const gender = formData.get('gender');
+            const myName = formData.get('myName');
+            const myQQ = formData.get('myQQ');
+            const myBirth = formData.get('myBirth');
+            const noPartner = formData.get('noPartner') === '1';
+            
+            // 验证必填字段
+            if (!myName) {
+                alert('请输入您的名称');
+                return;
+            }
+            if (!myQQ) {
+                alert('请输入您的QQ号码');
+                return;
+            }
+            if (!myBirth) {
+                alert('请输入您的生日');
+                return;
+            }
+            
+            // 如果不是单身，验证伴侣信息
+            if (!noPartner) {
+                const partnerName = formData.get('partnerName');
+                const partnerQQ = formData.get('partnerQQ');
+                const partnerBirth = formData.get('partnerBirth');
+                const anniversary = formData.get('anniversary');
+                
+                if (!partnerName) {
+                    alert('请输入伴侣名称');
+                    return;
+                }
+                if (!partnerQQ) {
+                    alert('请输入伴侣QQ号码');
+                    return;
+                }
+                if (!partnerBirth) {
+                    alert('请输入伴侣生日');
+                    return;
+                }
+                if (!anniversary) {
+                    alert('请输入恋爱纪念日');
+                    return;
+                }
+            }
+            
+            // 检查重复QQ
+            const partnerQQ = noPartner ? null : formData.get('partnerQQ');
+            const duplicateCheck = await checkDuplicateQQ(myQQ, partnerQQ);
+            
+            if (duplicateCheck.duplicate) {
+                document.getElementById('duplicateWarning').classList.remove('hidden');
+                const warningText = document.getElementById('warningText');
+                if (duplicateCheck.type === 'my') {
+                    warningText.textContent = `您的QQ号码(${duplicateCheck.existingQQ})已存在于系统中，名为"${duplicateCheck.name}"的记录。无法重复添加。`;
+                } else {
+                    warningText.textContent = `伴侣的QQ号码(${duplicateCheck.existingQQ})已存在于系统中，名为"${duplicateCheck.name}"的记录。无法重复添加。`;
+                }
+                return;
+            }
+            
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '0000-00-00 00:00';
+                const date = new Date(dateStr);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${year}-${month}-${day} ${hours}:${minutes}`;
+            };
+            
+            let newData;
+            
+            if (noPartner) {
+                if (gender === 'male') {
+                    newData = {
+                        male: {
+                            name: myName,
+                            qq: myQQ,
+                            birth: formatDate(myBirth)
+                        },
+                        female: {
+                            name: "未知女友",
+                            qq: "0000000001",
+                            birth: "0000-00-00 00:00"
+                        },
+                        anniversary: "00-00-00 00:00"
+                    };
+                } else {
+                    newData = {
+                        male: {
+                            name: "未知男友",
+                            qq: "0000000001",
+                            birth: "0000-00-00 00:00"
+                        },
+                        female: {
+                            name: myName,
+                            qq: myQQ,
+                            birth: formatDate(myBirth)
+                        },
+                        anniversary: "00-00-00 00:00"
+                    };
+                }
+            } else {
+                const partnerName = formData.get('partnerName');
+                const partnerQQ = formData.get('partnerQQ');
+                const partnerBirth = formData.get('partnerBirth');
+                const anniversary = formData.get('anniversary');
+                
+                if (gender === 'male') {
+                    newData = {
+                        male: {
+                            name: myName,
+                            qq: myQQ,
+                            birth: formatDate(myBirth)
+                        },
+                        female: {
+                            name: partnerName,
+                            qq: partnerQQ,
+                            birth: formatDate(partnerBirth)
+                        },
+                        anniversary: formatDate(anniversary)
+                    };
+                } else {
+                    newData = {
+                        male: {
+                            name: partnerName,
+                            qq: partnerQQ,
+                            birth: formatDate(partnerBirth)
+                        },
+                        female: {
+                            name: myName,
+                            qq: myQQ,
+                            birth: formatDate(myBirth)
+                        },
+                        anniversary: formatDate(anniversary)
+                    };
+                }
+            }
+            
+            // 设置提交状态，防止重复提交
+            isSubmitting = true;
+            const originalText = document.getElementById('submitBtn').textContent;
+            document.getElementById('submitBtn').textContent = '⏳ 添加中...';
+            document.getElementById('submitBtn').disabled = true;
+            
+            // 显示加载指示器
+            loadingOverlay.classList.remove('hidden');
+            retryMessage.classList.add('hidden'); // 隐藏重试消息
+            
+            try {
+                // 使用带重试机制的请求
+                const result = await fetchWithRetry(ADD_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(newData)
+                }, 3, 2000); // 最多重试3次，每次间隔2秒
+                
+                if (result.success) {
+                    alert('🎉 情侣信息添加成功！');
+                    // 重置表单
+                    document.getElementById('addForm').reset();
+                    // 重置单选按钮
+                    document.getElementById('genderMale').checked = false;
+                    document.getElementById('genderFemale').checked = false;
+                    // 隐藏伴侣信息
+                    partnerInfo.classList.add('hidden');
+                    document.getElementById('noPartner').checked = true;
+                    // 隐藏重复警告
+                    document.getElementById('duplicateWarning').classList.add('hidden');
+                } else {
+                    alert('❌ 添加失败: ' + (result.error || '未知错误'));
+                }
+            } catch (error) {
+                console.error('保存数据失败:', error);
+                
+                if (error.name === 'AbortError') {
+                    alert('⏰ 请求超时，请检查网络连接后重试');
+                } else {
+                    // 尝试再次获取数据来确认是否真的失败
+                    try {
+                        const verifyResponse = await fetch(CF_API_URL);
+                        const data = await verifyResponse.json();
+                        
+                        // 检查是否有最新添加的数据（通过匹配名称和QQ）
+                        const exists = data.some(item => {
+                            return (
+                                (item.male.name === newData.male.name && item.male.qq === newData.male.qq) ||
+                                (item.female.name === newData.female.name && item.female.qq === newData.female.qq)
+                            );
+                        });
+                        
+                        if (exists) {
+                            alert('🎉 恭喜！数据已成功添加，之前的超时是假象！');
+                        } else {
+                            alert('❌ 保存数据失败: ' + error.message);
+                        }
+                    } catch (verifyError) {
+                        console.error('验证数据是否存在时出错:', verifyError);
+                        alert('⚠️ 提交过程中出现问题，请稍后刷新页面查看数据是否已添加');
+                    }
+                }
+            } finally {
+                // 重置提交状态
+                isSubmitting = false;
+                document.getElementById('submitBtn').textContent = originalText;
+                document.getElementById('submitBtn').disabled = false;
+                // 隐藏加载指示器
+                loadingOverlay.classList.add('hidden');
+                retryMessage.classList.add('hidden');
+            }
+        });
+        
+        // 加载情侣列表
+        async function loadCoupleList() {
+            try {
+                // 设置加载状态提示
+                coupleSearchInput.placeholder = '情侣数据加载中...';
+                coupleSearchInput.disabled = true;
+                
+                const response = await fetch(CF_API_URL);
+                const data = await response.json();
+                allCouples = data;
+                
+                // 渲染下拉框选项
+                renderCoupleOptions(data);
+                
+                // 恢复搜索框为正常状态
+                coupleSearchInput.placeholder = '搜索情侣（名称或QQ）...';
+                coupleSearchInput.disabled = false;
+            } catch (error) {
+                coupleOptions.innerHTML = '<div class="custom-select-empty">数据加载失败</div>';
+                // 恢复搜索框
+                coupleSearchInput.placeholder = '搜索情侣（名称或QQ）...';
+                coupleSearchInput.disabled = false;
+                alert('加载情侣列表失败：' + error.message);
+            }
+        }
+        
+        // 渲染情侣选项（支持按名称和QQ搜索）
+        function renderCoupleOptions(couples, searchTerm = '') {
+            coupleOptions.innerHTML = '';
+            
+            if (couples.length === 0) {
+                coupleOptions.innerHTML = '<div class="custom-select-empty">暂无情侣信息</div>';
+                return;
+            }
+            
+            // 过滤匹配的情侣（按男女名称和QQ搜索）
+            let filteredCouples = couples;
+            if (searchTerm) {
+                filteredCouples = couples.filter(item => {
+                    const searchLower = searchTerm.toLowerCase();
+                    const maleName = item.male.name.toLowerCase();
+                    const femaleName = item.female.name.toLowerCase();
+                    const maleQQ = item.male.qq.toString();
+                    const femaleQQ = item.female.qq.toString();
+                    const fullName = `${item.male.name} & ${item.female.name}`.toLowerCase();
+                    
+                    return maleName.includes(searchLower) || 
+                           femaleName.includes(searchLower) || 
+                           maleQQ.includes(searchLower) ||
+                           femaleQQ.includes(searchLower) ||
+                           fullName.includes(searchLower);
+                });
+            }
+            
+            if (filteredCouples.length === 0) {
+                coupleOptions.innerHTML = '<div class="custom-select-no-match">未找到匹配的情侣</div>';
+                return;
+            }
+            
+            // 显示最多6条，支持滚动
+            filteredCouples.forEach(item => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'custom-select-option';
+                if (selectedCoupleId === item.id) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                // 创建信息容器
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'couple-info';
+                
+                const namesDiv = document.createElement('div');
+                namesDiv.className = 'couple-names';
+                namesDiv.textContent = `${item.male.name} & ${item.female.name}`;
+                
+                
+                infoDiv.appendChild(namesDiv);
+                optionDiv.appendChild(infoDiv);
+                
+                optionDiv.addEventListener('click', () => {
+                    selectedCoupleId = item.id;
+                    coupleSearchInput.value = `${item.male.name} & ${item.female.name}`;
+                    coupleDropdown.classList.add('hidden');
+                    renderCoupleOptions(allCouples, '');
+                });
+                coupleOptions.appendChild(optionDiv);
             });
         }
         
-        window.editItem = async (id) => {
-            alert('编辑功能需要在完整版本中实现，当前版本仅支持查看和删除');
-        };
+        // 返回列表的函数
+        function returnToList() {
+            selectedCoupleId = null;
+            coupleSearchInput.value = '';
+            selectSection.classList.remove('hidden');
+            editSection.classList.add('hidden');
+            renderCoupleOptions(allCouples, '');
+        }
         
-        window.deleteItem = async (id) => {
-            if (!confirm('确定要删除这条情侣信息吗？')) return;
+        // 选择情侣
+        selectBtn.addEventListener('click', () => {
+            if (!selectedCoupleId) {
+                alert('请选择要管理的情侣信息');
+                return;
+            }
+            
+            // 获取选中的情侣信息
+            fetch(`${CF_API_URL}/${selectedCoupleId}`)
+                .then(response => response.json())
+                .then(data => {
+                    currentCouple = data;
+                    selectSection.classList.add('hidden');
+                    editSection.classList.remove('hidden');
+                    loadCoupleData();
+                })
+                .catch(error => {
+                    alert('获取情侣信息失败：' + error.message);
+                });
+        });
+        
+        // 搜索框事件监听
+        coupleSearchInput.addEventListener('focus', () => {
+            coupleDropdown.classList.remove('hidden');
+            renderCoupleOptions(allCouples, coupleSearchInput.value);
+        });
+        
+        coupleSearchInput.addEventListener('input', (e) => {
+            renderCoupleOptions(allCouples, e.target.value);
+        });
+        
+        // 点击外部关闭下拉框
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-select-wrapper')) {
+                coupleDropdown.classList.add('hidden');
+            }
+        });
+        
+        // 加载情侣数据到表单
+        function loadCoupleData() {
+            if (!currentCouple) return;
+            
+            document.getElementById('maleName').value = currentCouple.male.name;
+            document.getElementById('maleQQ').value = currentCouple.male.qq;
+            document.getElementById('maleBirth').value = formatDateTimeForInput(currentCouple.male.birth);
+            document.getElementById('femaleName').value = currentCouple.female.name;
+            document.getElementById('femaleQQ').value = currentCouple.female.qq;
+            document.getElementById('femaleBirth').value = formatDateTimeForInput(currentCouple.female.birth);
+            document.getElementById('editanniversary').value = formatDateTimeForInput(currentCouple.anniversary);
+        }
+        
+        // 格式化日期用于输入框
+        function formatDateTimeForInput(datetimeStr) {
+            if (!datetimeStr || datetimeStr.includes('0000-00-00')) return '';
+            // 转换 "YYYY-MM-DD HH:MM" 为 "YYYY-MM-DDTHH:MM" 格式
+            return datetimeStr.replace(' ', 'T');
+        }
+        
+        // 格式化日期用于提交
+        function formatDateTimeForSubmit(datetimeStr) {
+            if (!datetimeStr) return '0000-00-00 00:00';
+            // 转换 "YYYY-MM-DDTHH:MM" 为 "YYYY-MM-DD HH:MM" 格式
+            return datetimeStr.replace('T', ' ');
+        }
+        
+        // 编辑表单提交
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // 防重复提交检查
+            if (isSubmitting) {
+                return;
+            }
+            
+            const updatedCouple = {
+                male: {
+                    name: document.getElementById('maleName').value,
+                    qq: document.getElementById('maleQQ').value,
+                    birth: formatDateTimeForSubmit(document.getElementById('maleBirth').value)
+                },
+                female: {
+                    name: document.getElementById('femaleName').value,
+                    qq: document.getElementById('femaleQQ').value,
+                    birth: formatDateTimeForSubmit(document.getElementById('femaleBirth').value)
+                },
+                anniversary: formatDateTimeForSubmit(document.getElementById('editanniversary').value)
+            };
+            
+            // 设置提交状态，防止重复提交
+            isSubmitting = true;
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = '⏳ 保存中...';
+            saveBtn.disabled = true;
+            
+            // 显示加载指示器
+            loadingOverlay.classList.remove('hidden');
+            retryMessage.classList.add('hidden'); // 隐藏重试消息
             
             try {
-                const response = await fetch(`${DELETE_API_URL}${id}?password=xiaozhou`, {
-                    method: 'DELETE'
+                const result = await fetchWithRetry(`${UPDATE_API_URL}${currentCouple.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(updatedCouple)
+                }, 3, 2000); // 最多重试3次，每次间隔2秒
+                
+                if (result.success) {
+                    alert('情侣信息更新成功！');
+                    // 重新加载当前情侣信息
+                    const response = await fetch(`${CF_API_URL}/${currentCouple.id}`);
+                    if (!response.ok) throw new Error('获取更新后的情侣信息失败');
+                    currentCouple = await response.json();
+                    // 重新加载表单数据
+                    loadCoupleData();
+                } else {
+                    alert('更新失败：' + (result.error || '未知错误'));
+                }
+            } catch (error) {
+                console.error('保存数据失败:', error);
+                
+                if (error.name === 'AbortError') {
+                    alert('⏰ 请求超时，请检查网络连接后重试');
+                } else {
+                    // 尝试再次获取数据来确认是否真的失败
+                    try {
+                        const verifyResponse = await fetch(`${CF_API_URL}/${currentCouple.id}`);
+                        const data = await verifyResponse.json();
+                        
+                        // 检查是否更新成功（比较数据）
+                        const hasChanged = 
+                            data.male.name !== updatedCouple.male.name ||
+                            data.male.qq !== updatedCouple.male.qq ||
+                            data.male.birth !== updatedCouple.male.birth ||
+                            data.female.name !== updatedCouple.female.name ||
+                            data.female.qq !== updatedCouple.female.qq ||
+                            data.female.birth !== updatedCouple.female.birth ||
+                            data.anniversary !== updatedCouple.anniversary;
+                        
+                        if (!hasChanged) {
+                            alert('🎉 恭喜！数据已成功更新，之前的超时是假象！');
+                        } else {
+                            alert('❌ 保存数据失败: ' + error.message);
+                        }
+                    } catch (verifyError) {
+                        console.error('验证数据是否存在时出错:', verifyError);
+                        alert('⚠️ 提交过程中出现问题，请稍后刷新页面查看数据是否已更新');
+                    }
+                }
+            } finally {
+                // 重置提交状态
+                isSubmitting = false;
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+                // 隐藏加载指示器
+            }
+        });
+        
+        // 删除记录
+        deleteBtn.addEventListener('click', async () => {
+            if (!currentCouple) {
+                alert('没有选中的情侣信息');
+                return;
+            }
+            
+            if (!confirm('确定要删除这条情侣信息吗？此操作无法恢复！')) return;
+            
+            // 防重复提交检查
+            if (isSubmitting) {
+                return;
+            }
+            
+            // 设置提交状态，防止重复提交
+            isSubmitting = true;
+            const originalText = deleteBtn.textContent;
+            deleteBtn.textContent = '⏳ 删除中...';
+            deleteBtn.disabled = true;
+            
+            // 显示加载指示器
+            loadingOverlay.classList.remove('hidden');
+            retryMessage.classList.add('hidden'); // 隐藏重试消息
+            
+            try {
+                const result = await fetchWithRetry(`${DELETE_API_URL}${currentCouple.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                }, 3, 2000); // 最多重试3次，每次间隔2秒
+                
+                if (result.success) {
+                    alert('情侣信息删除成功！');
+                    // 重置管理区域
+                    returnToList();
+                    // 重新加载情侣列表
+                    await loadCoupleList();
+                } else {
+                    alert('删除失败：' + (result.error || '未知错误'));
+                }
+            } catch (error) {
+                console.error('删除数据失败:', error);
+                
+                if (error.name === 'AbortError') {
+                    alert('⏰ 请求超时，请检查网络连接后重试');
+                } else {
+                    alert('❌ 删除失败: ' + error.message);
+                }
+            } finally {
+                // 重置提交状态
+                isSubmitting = false;
+                deleteBtn.textContent = originalText;
+                deleteBtn.disabled = false;
+                // 隐藏加载指示器
+                loadingOverlay.classList.add('hidden');
+                retryMessage.classList.add('hidden');
+            }
+        });
+        
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUsername');
+            authToken = '';
+            loginSection.classList.remove('hidden');
+            adminSection.classList.add('hidden');
+            document.getElementById('adminPanelBtn').classList.add('hidden');
+            document.getElementById('adminDropdown').classList.add('hidden');
+        }
+        
+        // 管理员面板按钮
+        document.getElementById('adminPanelBtn').addEventListener('click', function() {
+            const dropdown = document.getElementById('adminDropdown');
+            dropdown.classList.toggle('hidden');
+        });
+        
+        // 修改密码按钮
+        document.getElementById('changePasswordBtn').addEventListener('click', () => {
+            document.getElementById('passwordModal').classList.remove('hidden');
+            document.getElementById('adminDropdown').classList.add('hidden');
+        });
+        
+        // 关闭修改密码弹窗
+        document.getElementById('closePasswordModal').addEventListener('click', () => {
+            document.getElementById('passwordModal').classList.add('hidden');
+            document.getElementById('changePasswordForm').reset();
+        });
+        
+        document.getElementById('cancelPasswordBtn').addEventListener('click', () => {
+            document.getElementById('passwordModal').classList.add('hidden');
+            document.getElementById('changePasswordForm').reset();
+        });
+        
+        // 修改密码表单提交
+        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // 验证密码
+            if (newPassword !== confirmPassword) {
+                alert('⚠️ 两次输入的新密码不一致');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('⚠️ 新密码长度至少为6位');
+                return;
+            }
+            
+            const changeBtn = document.querySelector('#changePasswordForm .btn.success');
+            const originalText = changeBtn.textContent;
+            changeBtn.textContent = '⏳ 修改中...';
+            changeBtn.disabled = true;
+            
+            try {
+                const response = await fetch('https://jnr-api.lvxin.xn--6qq986b3xl/api/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        oldPassword,
+                        newPassword
+                    })
                 });
+                
                 const result = await response.json();
                 
                 if (result.success) {
-                    loadData();
-                    alert('删除成功！');
+                    alert('✅ 密码修改成功！');
+                    document.getElementById('passwordModal').classList.add('hidden');
+                    document.getElementById('changePasswordForm').reset();
                 } else {
-                    alert('删除失败：' + result.error);
+                    alert('❌ 密码修改失败：' + (result.error || '未知错误'));
                 }
             } catch (error) {
-                alert('删除失败：' + error.message);
+                alert('❌ 请求失败：' + error.message);
+            } finally {
+                changeBtn.textContent = originalText;
+                changeBtn.disabled = false;
             }
-        };
+        });
         
-        function formatDateTime(datetimeStr) {
-            if (!datetimeStr) return '0000-00-00 00:00';
-            const date = new Date(datetimeStr);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            return `${year}-${month}-${day} ${hours}:${minutes}`;
-        }
+        // 退出按钮事件监听
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (confirm('确定要退出登录吗？')) {
+                logout();
+            }
+        });
+        
+        // 点击页面其他地方关闭下拉菜单
+        document.addEventListener('click', (e) => {
+            const adminPanel = document.querySelector('.admin-panel');
+            const dropdown = document.getElementById('adminDropdown');
+            if (adminPanel && !adminPanel.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        
+        // 页面加载时检查登录状态
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            if (adminSection.classList.contains('hidden')) {
+            loadCoupleList(); // 如果未登录，仍然加载情侣列表（用于登录后使用）
+            }
+            loadCoupleList();
+        });
     </script>
 </body>
 </html>
