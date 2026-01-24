@@ -2,91 +2,272 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>我们的六周年 💗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>六周年 · 致鑫鑫</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
-      background: #fef9f3;
-      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-      color: #444;
+      background: #fff0f5;
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+      color: #333;
       line-height: 1.8;
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
     }
-    .container {
-      max-width: 600px;
+
+    /* === 粒子画布置顶 === */
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000; /* 确保在最顶层 */
+    }
+
+    /* --- 顶部标题 --- */
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 240, 245, 0.9);
+      padding: 1rem 1.5rem 0.5rem;
       text-align: center;
+      border-bottom: 1px dashed #ffb6c1;
+      z-index: 10;
+      height: 60px; 
     }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      color: #e75480;
-      letter-spacing: 3px;
+
+    .header h1 {
+      font-size: 1.6rem;
+      color: #d63384;
+      letter-spacing: 2px;
     }
-    .letter {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(231, 84, 128, 0.1);
+
+    /* --- 中间信纸区域 --- */
+    .envelope-area {
+      position: absolute;
+      /* 保持你满意的设置 */
+      top: 85px; 
+      left: 5%;
+      right: 5%;
+      /* 保持你满意的设置 */
+      height: calc(100vh - 180px - 60px); 
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1);
+      border: 8px solid #fff;
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    .envelope-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .letter-content {
+      position: relative;
+      z-index: 1;
       font-size: 1rem;
-      white-space: pre-line;
-      text-align: left;
+      color: #555;
+      line-height: 1.6;
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px;
+      text-indent: 2em;
     }
-    .signature {
-      margin-top: 1.5rem;
-      font-style: italic;
+
+    /* --- 底部签名 --- */
+    .footer {
+      /* 关键修改：改为绝对定位，并基于 .envelope-area 的底部 */
+      position: absolute;
+      /* 关键修改：不再固定在屏幕底部，而是放在信纸框下面 */
+      bottom: 40px; 
+      left: 5%; /* 和信纸框左边对齐 */
+      width: 90%; /* 和信纸框宽度一致 (100% - 5% - 5%) */
+      padding: 1rem 1.5rem;
       text-align: right;
+      background: rgba(255, 240, 245, 0.9);
+      border-top: 1px dashed #ffb6c1;
+      z-index: 10; 
+      font-style: italic;
+      color: #6c757d;
+      font-size: 0.95rem;
+      /* 增加一点内边距，让文字不要太贴边 */
+      box-sizing: border-box;
     }
-    .heart {
-      font-size: 1.4rem;
-      margin: 0.8rem 0;
-      color: #e75480;
+
+    /* --- 滚动条 --- */
+    .letter-content::-webkit-scrollbar {
+      width: 6px;
     }
-    @media (max-width: 500px) {
-      .letter {
-        padding: 1.8rem;
-        font-size: 0.95rem;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
+    .letter-content::-webkit-scrollbar-track {
+      background: #f8f9fa;
+      border-radius: 3px;
+    }
+    .letter-content::-webkit-scrollbar-thumb {
+      background: #d63384;
+      border-radius: 3px;
+    }
+
+    /* --- 打字光标 --- */
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background: #d63384;
+      margin-left: 2px;
+      animation: blink 1s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+
+  <!-- 粒子背景 -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- 顶部标题 -->
+  <header class="header">
     <h1>致我最爱的鑫鑫 💗</h1>
-    <div class="heart">六年 · 慢慢亦漫漫</div>
-    <div class="letter">
-很开心我们出现在彼此的生命里，  
-成为目前彼此很重要的人，离不开也不想离开的人。  
+    <p style="color: #d63384; font-size: 0.9rem;">六周年快乐 · 幸福快乐！</p>
+  </header>
 
-虽然我不是一个暖心的人，也会有坏脾气和不理解，  
-但希望我在你眼里，我依然是很好的那个。  
-
-可能慢慢我们的新鲜感会过、会产生倦意、会发现彼此的好多缺点。  
-可“爱”是什么呢？  
-
-爱是时间把所有掩体都拿掉，我还是依然毫不犹豫地想要在你身边。  
-
-愿我们能享受热烈的新鲜感，也能经受住时光的打磨。  
-对于我而言，你永远是星辰大海，无可代替。  
-
-你不需要多完美，你只需要做你自己就好。  
-我会慢慢又长长地爱你，周而复始，慢慢亦漫漫。
+  <!-- 中间信纸 -->
+  <main class="envelope-area">
+    <div class="envelope-inner">
+      <div class="letter-content" id="typed-text"></div>
+      <span class="cursor"></span>
     </div>
-    <div class="signature">
-      —— 永远爱你的<br>小周<br>2026年1月24日
-    </div>
-  </div>
+  </main>
+
+  <!-- 底部签名 -->
+  <footer class="footer">
+    —— 永远爱你的 小周<br>
+    2026年1月24日
+  </footer>
+
+  <script>
+    // === 文字内容 (已按要求添加空行) ===
+    const content = `亲爱的鑫，六周年快乐，见字如面。
+
+此刻提笔，心中有千言万语，却又不知从何说起。这封信其实早已酝酿多时，只是怕自己笔拙，写不出心中万分之一的情意。但转念一想，对于你我而言，重要的从来不是辞藻的华丽，而是这份跨越六年的真心，热烈且真诚。
+
+如果爱只存在一瞬间，我想我已经拥有过无数次。谢谢你来爱我，让我懂得什么是被偏爱的幸福。我爱你，爱从来不是一道选择题，也不是不合适就分开的借口，而是一种温暖的本能。我想让你知道，我对你的承诺与爱意，不是一时兴起，而是源于内心深处无数次的心动。让我总是情不自禁地在乎你、关心你、惦记你，想懂你的欲言又止，这并非因为我执着，而是因为你值得。
+
+回想初识之时，我就觉得与你相处格外舒服。你活泼明亮，开朗向上，没有高高在上，也没有不合时宜的试探。你细腻地感知着我的态度，保持着恰到好处的界限，一步步走进我的心里。在一起之后，我常常庆幸你出现在我的生命里。亲爱的文鑫，若要形容你的好，我想那是在我嘴笨词穷时包容我的你，是给予我满满情绪价值的你，是事事有回应、件件有着落的你，是心里永远装着我的你。而这，仅仅是你美好品质的冰山一角。
+
+我想和你拥有更长远的未来，想把世间所有美好的事物都与你分享。想每天肆无忌惮地爱你，每天给你最踏实的拥抱，想在你生气时第一时间哄你，想和你一起虚度光阴，腻在每一个平凡的日子里。我希望你一直在我身边，因为遇见你，让我觉得生活的节奏不必那么匆忙。想花更多的时间投入到日常里，牵着手散步，聊些无关紧要的废话，这些稀松平常的小事，因为有你，才显得弥足珍贵。
+
+每次与你相拥，我总喜欢把头埋在你的脖颈，嗅着你身上淡淡的馨香，悄悄注视着你的睫毛、鼻子和嘴巴，将你的模样刻进脑海。我为何总喜欢盯着你看，其实害怕现在的相聚是不知何时的分离，我只想把你现在的样子，一次次深刻地印在脑海里。
+
+如果爱是一道选择题，那你永远是我的首选，是我坚定不移的答案。
+
+六周年快乐，我爱你❤️。`;
+
+    const typedTextElement = document.getElementById('typed-text');
+    let index = 0;
+
+    function typeWriter() {
+      if (index < content.length) {
+        // 关键修改：将换行符 \n 转换为 HTML 的 <br> 标签
+        let char = content.charAt(index);
+        if (char === '\n') {
+          typedTextElement.innerHTML += '<br>';
+        } else {
+          typedTextElement.innerHTML += char;
+        }
+        
+        // 自动滚动
+        typedTextElement.scrollTop = typedTextElement.scrollHeight;
+
+        index++;
+        let delay = 50; 
+        if ('。！？\n'.includes(content.charAt(index))) {
+          delay = 400;
+        } else if ('，、'.includes(content.charAt(index))) {
+          delay = 200;
+        }
+        setTimeout(typeWriter, delay);
+      }
+    }
+
+    // === 粒子系统 (保持不变) ===
+    class ParticleSystem {
+      constructor() {
+        this.canvas = document.getElementById('particle-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.chars = ['❤', '✦', '✧', '✲', '❉', '❆']; 
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.init();
+      }
+
+      resize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+      }
+
+      init() {
+        this.particles = [];
+        for (let i = 0; i < 50; i++) {
+          this.particles.push({
+            x: Math.random() * this.width,
+            y: Math.random() * this.height,
+            char: this.chars[Math.floor(Math.random() * this.chars.length)],
+            size: Math.random() * 10 + 10,
+            speed: Math.random() * 1 + 0.5,
+            opacity: Math.random() * 0.5 + 0.3
+          });
+        }
+        this.animate();
+      }
+
+      animate() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        this.particles.forEach(p => {
+          this.ctx.globalAlpha = p.opacity;
+          this.ctx.font = `bold ${p.size}px Arial`;
+          this.ctx.textAlign = 'center';
+          this.ctx.fillStyle = '#d63384'; 
+          this.ctx.fillText(p.char, p.x, p.y);
+          
+          p.y += p.speed;
+          if (p.y > this.height) {
+            p.y = -10;
+            p.x = Math.random() * this.width;
+          }
+        });
+
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+
+    // 页面加载完成后启动
+    window.onload = function() {
+      new ParticleSystem();
+      typeWriter();
+    };
+  </script>
 </body>
 </html>
