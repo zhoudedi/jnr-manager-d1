@@ -72,6 +72,7 @@
                 transform: scale(0.8);
                 color: #ffcccc;
                 font-weight:normal
+          
             }
         }
         
@@ -84,6 +85,7 @@
             }
             50% {
                 -webkit-transform: scale(1);
+                
             }
             75% {
                 -webkit-transform: scale(0.7);
@@ -102,6 +104,7 @@
             }
             50% {
                 -o-transform: scale(1);
+               
             }
             75% {
                 -o-transform: scale(0.7);
@@ -120,6 +123,7 @@
             }
             50% {
                 -moz-transform: scale(1);
+                
             }
             75% {
                 -moz-transform: scale(0.7);
@@ -135,33 +139,6 @@
     <!-- 在下面加名字 -->
     <canvas id="pinkboard"></canvas>
    <a href="./anniversary.html" target="_self"> <div>鑫鑫</div></a>
-
-    <!-- === 新增：隐藏的音频标签 (使用Base64内嵌音效，无需外部文件) === -->
-    <!-- 这是一个极短的脉冲音效，模拟心跳 -->
-    <audio id="heartbeatSound" src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" preload="auto"></audio>
-
-    <script>
-        // 获取音频元素和动画元素
-        const audio = document.getElementById('heartbeatSound');
-        const heartDiv = document.querySelector('div');
-
-        // 监听动画迭代事件 (每次动画循环结束时触发)
-        heartDiv.addEventListener('animationiteration', function() {
-            // 在动画进行到50% (即爱心最大时) 播放声音
-            // 由于无法直接监听50%关键帧，我们使用setTimeout模拟延迟
-            // 动画总时长1.5s，50%即0.75s
-            setTimeout(() => {
-                // 每次播放前重置时间，避免重叠
-                audio.currentTime = 0;
-                audio.play().catch(e => {
-                    // 如果播放被阻止 (如浏览器策略)，在控制台输出提示
-                    console.log("请先与页面交互 (点击/触摸) 以启用声音");
-                });
-            }, 750); // 0.75秒后播放
-        });
-    </script>
-
-    <!-- === 保持你原有的粒子系统脚本不变 === -->
     <script>
         var settings = {
             particles: {
@@ -172,8 +149,6 @@
                 size: 30,
             },
         };
-        
-        // requestAnimationFrame polyfill
         (function() {
             var b = 0;
             var c = ["ms", "moz", "webkit", "o"];
@@ -200,8 +175,6 @@
                 };
             }
         })();
-
-        // Point 类
         var Point = (function() {
             function Point(x, y) {
                 this.x = typeof x !== "undefined" ? x : 0;
@@ -226,8 +199,6 @@
             };
             return Point;
         })();
-
-        // Particle 类
         var Particle = (function() {
             function Particle() {
                 this.position = new Point();
@@ -267,8 +238,6 @@
             };
             return Particle;
         })();
-
-        // ParticlePool 类
         var ParticlePool = (function() {
             var particles,
                 firstActive = 0,
@@ -319,12 +288,11 @@
             };
             return ParticlePool;
         })();
-
-        // 初始化粒子效果
         (function(canvas) {
             var context = canvas.getContext("2d"),
                 particles = new ParticlePool(settings.particles.length),
-                particleRate = settings.particles.length / settings.particles.duration,
+                particleRate =
+                settings.particles.length / settings.particles.duration,
                 time;
 
             function pointOnHeart(t) {
@@ -337,7 +305,6 @@
                     25
                 );
             }
-
             var image = (function() {
                 var canvas = document.createElement("canvas"),
                     context = canvas.getContext("2d");
@@ -403,4 +370,5 @@
         })(document.getElementById("pinkboard"));
     </script>
 </body>
+
 </html>
