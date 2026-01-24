@@ -29,12 +29,12 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1000; /* 确保在最顶层 */
+      z-index: 1;
     }
 
     /* --- 顶部标题 --- */
     .header {
-      position: absolute;
+      position: fixed; /* 修改：将 absolute 改为 fixed */
       top: 0;
       left: 0;
       width: 100%;
@@ -50,22 +50,24 @@
       font-size: 1.6rem;
       color: #d63384;
       letter-spacing: 2px;
+      /* 新增：确保标题固定在顶部 */
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     /* --- 中间信纸区域 --- */
     .envelope-area {
       position: absolute;
-      /* 保持你满意的设置 */
       top: 85px; 
       left: 5%;
       right: 5%;
-      /* 保持你满意的设置 */
-      height: calc(100vh - 180px - 60px); 
+      bottom: 19%; 
       background: #fff;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1);
       border: 8px solid #fff;
-      overflow: hidden;
+      overflow: hidden; 
       z-index: 5;
     }
 
@@ -90,21 +92,18 @@
 
     /* --- 底部签名 --- */
     .footer {
-      /* 关键修改：改为绝对定位，并基于 .envelope-area 的底部 */
-      position: absolute;
-      /* 关键修改：不再固定在屏幕底部，而是放在信纸框下面 */
-      bottom: 40px; 
-      left: 5%; /* 和信纸框左边对齐 */
-      width: 90%; /* 和信纸框宽度一致 (100% - 5% - 5%) */
+      position: fixed;
+      bottom: 0;
+      left: 5%;
+      width: 90%;
       padding: 1rem 1.5rem;
       text-align: right;
       background: rgba(255, 240, 245, 0.9);
       border-top: 1px dashed #ffb6c1;
-      z-index: 10; 
+      z-index: 9; 
       font-style: italic;
       color: #6c757d;
       font-size: 0.95rem;
-      /* 增加一点内边距，让文字不要太贴边 */
       box-sizing: border-box;
     }
 
@@ -163,8 +162,38 @@
     2026年1月24日
   </footer>
 
+  <!-- 音乐播放器 -->
+  <audio id="bg-music" src="anniversary.mp3" preload="auto" loop></audio>
+
   <script>
-    // === 文字内容 (已按要求添加空行) ===
+    // 音乐播放逻辑
+    document.addEventListener('DOMContentLoaded', function() {
+      const audio = document.getElementById('bg-music');
+
+      const tryPlay = () => {
+        audio.play().then(() => {
+          console.log('背景音乐播放成功');
+        }).catch(err => {
+          console.log('自动播放被阻止，等待用户交互:', err);
+        });
+      };
+
+      const handleClick = () => {
+        audio.play().then(() => {
+          console.log('用户交互后音乐已播放');
+        }).catch(err => {
+          console.error('播放失败，请检查链接或浏览器设置:', err);
+        });
+        document.removeEventListener('click', handleClick);
+        document.removeEventListener('touchstart', handleClick);
+      };
+
+      tryPlay();
+      document.addEventListener('click', handleClick);
+      document.addEventListener('touchstart', handleClick);
+    });
+
+    // 文字内容
     const content = `亲爱的鑫，六周年快乐，见字如面。
 
 此刻提笔，心中有千言万语，却又不知从何说起。这封信其实早已酝酿多时，只是怕自己笔拙，写不出心中万分之一的情意。但转念一想，对于你我而言，重要的从来不是辞藻的华丽，而是这份跨越六年的真心，热烈且真诚。
@@ -186,7 +215,6 @@
 
     function typeWriter() {
       if (index < content.length) {
-        // 关键修改：将换行符 \n 转换为 HTML 的 <br> 标签
         let char = content.charAt(index);
         if (char === '\n') {
           typedTextElement.innerHTML += '<br>';
@@ -208,7 +236,7 @@
       }
     }
 
-    // === 粒子系统 (保持不变) ===
+    // 粒子系统
     class ParticleSystem {
       constructor() {
         this.canvas = document.getElementById('particle-canvas');
