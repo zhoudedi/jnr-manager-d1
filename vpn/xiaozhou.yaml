@@ -1,0 +1,1658 @@
+mixed-port: 7890
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: false
+external-controller: 0.0.0.0:9090
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  ipv6: false
+  default-nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+    - 119.29.29.29
+    - 180.76.76.76
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "*.lan"
+    - "*.localdomain"
+    - "*.example"
+    - "*.invalid"
+    - "*.localhost"
+    - "*.test"
+    - "*.local"
+    - "*.home.arpa"
+    - router.asus.com
+    - localhost.sec.qq.com
+    - localhost.ptlogin2.qq.com
+    - +.msftconnecttest.com
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - 114.114.114.114
+    - 180.76.76.76
+    - 119.29.29.29
+    - 223.5.5.5
+    - 8.8.8.8
+    - 8.8.4.4
+    - 1.1.1.1
+    - 1.0.0.1
+proxies:
+  - name: 土耳其标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11055
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 3
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11003
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港高级 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12001
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 台湾标准 IEPL 专线 2
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11043
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 2
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11008
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 6
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11031
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 4
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11032
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 7
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11005
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新西兰标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11070
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: "Traffic: 308.06 GB | 1000 GB"
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 10012
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 台湾标准 IEPL 专线 3
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11042
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 2
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11038
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11034
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港实验性 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 10012
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 台湾高级 IEPL 专线 3
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12042
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 台湾标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11041
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港高级 IEPL 专线 2
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12003
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 菲律宾标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11084
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 5
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11036
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡实验性 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 10032
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 印度标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11080
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 澳大利亚标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11069
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 阿联酋标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11083
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: "Expire: 2025-10-14"
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 10012
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 8
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11007
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡高级 IEPL 专线 3
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12032
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 台湾高级 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12041
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡高级 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12031
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 马来西亚标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11085
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 5
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11006
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 越南标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11075
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 泰国标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11074
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 台湾高级 IEPL 专线 2
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12043
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 6
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11001
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11004
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 3
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11033
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡高级 IEPL 专线 2
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12033
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 8
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11037
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 印尼标准 IEPL 专线 1
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11073
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 新加坡标准 IEPL 专线 7
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11035
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港高级 IEPL 专线 3
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 12002
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 香港标准 IEPL 专线 4
+    type: ss
+    server: gzdata1.233netpro.com
+    port: 11002
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国实验性 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 10052
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 8
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11027
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11024
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 7
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11025
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 5
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11015
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 加拿大标准 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11065
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 5
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11026
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 6
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11017
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 4
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11014
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 以色列标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11082
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 乌克兰标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11051
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 巴西标准 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11067
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 2
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11013
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 荷兰标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11061
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11011
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 法国标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11063
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 尼日利亚标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11087
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 3
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11012
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本高级 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 12011
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本实验性 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 10022
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 阿根廷标准 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11066
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 德国标准 IEPL 专线 2
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11056
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国高级 IEPL 专线 3
+    type: ss
+    server: shdata1.233netpro.com
+    port: 12022
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国高级 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 12021
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 英国标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11059
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 韩国标准 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11072
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本高级 IEPL 专线 2
+    type: ss
+    server: shdata1.233netpro.com
+    port: 12013
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 智利标准 IEPL 专线 1
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11068
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本高级 IEPL 专线 3
+    type: ss
+    server: shdata1.233netpro.com
+    port: 12012
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 7
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11016
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国高级 IEPL 专线 2
+    type: ss
+    server: shdata1.233netpro.com
+    port: 12023
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 韩国标准 IEPL 专线 2
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11071
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 摩尔多瓦标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11050
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 日本标准 IEPL 专线 8
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11018
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 加拿大标准 IEPL 专线 2
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11064
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 6
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11021
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 意大利标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11052
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 匈牙利标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11053
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 法国标准 IEPL 专线 2
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11062
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 4
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11022
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 3
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11023
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 荷兰标准 IEPL 专线 2
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11060
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 德国标准 IEPL 专线 1
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11057
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 英国标准 IEPL 专线 2
+    type: ss
+    server: bjdata1.233netpro.com
+    port: 11058
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+  - name: 美国标准 IEPL 专线 2
+    type: ss
+    server: shdata1.233netpro.com
+    port: 11028
+    cipher: aes-128-gcm
+    password: Sj10bnYDe7w6V29E
+    plugin: obfs
+    plugin-opts:
+      mode: http
+      host: cc11a03bb8.m.ctrip.com
+proxy-groups:
+  - name: 🚀 节点选择
+    type: select
+    proxies:
+      - ♻️ 自动选择
+      - DIRECT
+      - 土耳其标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 3
+      - 香港高级 IEPL 专线 1
+      - 台湾标准 IEPL 专线 2
+      - 香港标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 6
+      - 新加坡标准 IEPL 专线 4
+      - 香港标准 IEPL 专线 7
+      - 新西兰标准 IEPL 专线 1
+      - "Traffic: 308.06 GB | 1000 GB"
+      - 台湾标准 IEPL 专线 3
+      - 新加坡标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 1
+      - 香港实验性 IEPL 专线 1
+      - 台湾高级 IEPL 专线 3
+      - 台湾标准 IEPL 专线 1
+      - 香港高级 IEPL 专线 2
+      - 菲律宾标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 5
+      - 新加坡实验性 IEPL 专线 1
+      - 印度标准 IEPL 专线 1
+      - 澳大利亚标准 IEPL 专线 1
+      - 阿联酋标准 IEPL 专线 1
+      - "Expire: 2025-10-14"
+      - 香港标准 IEPL 专线 8
+      - 新加坡高级 IEPL 专线 3
+      - 台湾高级 IEPL 专线 1
+      - 新加坡高级 IEPL 专线 1
+      - 马来西亚标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 5
+      - 越南标准 IEPL 专线 1
+      - 泰国标准 IEPL 专线 1
+      - 台湾高级 IEPL 专线 2
+      - 香港标准 IEPL 专线 6
+      - 香港标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 3
+      - 新加坡高级 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 8
+      - 印尼标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 7
+      - 香港高级 IEPL 专线 3
+      - 香港标准 IEPL 专线 4
+      - 美国实验性 IEPL 专线 1
+      - 美国标准 IEPL 专线 8
+      - 美国标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 7
+      - 日本标准 IEPL 专线 5
+      - 加拿大标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 5
+      - 日本标准 IEPL 专线 6
+      - 日本标准 IEPL 专线 4
+      - 以色列标准 IEPL 专线 1
+      - 乌克兰标准 IEPL 专线 1
+      - 巴西标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 2
+      - 荷兰标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 1
+      - 尼日利亚标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 3
+      - 日本高级 IEPL 专线 1
+      - 日本实验性 IEPL 专线 1
+      - 阿根廷标准 IEPL 专线 1
+      - 德国标准 IEPL 专线 2
+      - 美国高级 IEPL 专线 3
+      - 美国高级 IEPL 专线 1
+      - 英国标准 IEPL 专线 1
+      - 韩国标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 2
+      - 智利标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 3
+      - 日本标准 IEPL 专线 7
+      - 美国高级 IEPL 专线 2
+      - 韩国标准 IEPL 专线 2
+      - 摩尔多瓦标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 8
+      - 加拿大标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 6
+      - 意大利标准 IEPL 专线 1
+      - 匈牙利标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 4
+      - 美国标准 IEPL 专线 3
+      - 荷兰标准 IEPL 专线 2
+      - 德国标准 IEPL 专线 1
+      - 英国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 2
+  - name: ♻️ 自动选择
+    type: url-test
+    proxies:
+      - 土耳其标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 3
+      - 香港高级 IEPL 专线 1
+      - 台湾标准 IEPL 专线 2
+      - 香港标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 6
+      - 新加坡标准 IEPL 专线 4
+      - 香港标准 IEPL 专线 7
+      - 新西兰标准 IEPL 专线 1
+      - "Traffic: 308.06 GB | 1000 GB"
+      - 台湾标准 IEPL 专线 3
+      - 新加坡标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 1
+      - 香港实验性 IEPL 专线 1
+      - 台湾高级 IEPL 专线 3
+      - 台湾标准 IEPL 专线 1
+      - 香港高级 IEPL 专线 2
+      - 菲律宾标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 5
+      - 新加坡实验性 IEPL 专线 1
+      - 印度标准 IEPL 专线 1
+      - 澳大利亚标准 IEPL 专线 1
+      - 阿联酋标准 IEPL 专线 1
+      - "Expire: 2025-10-14"
+      - 香港标准 IEPL 专线 8
+      - 新加坡高级 IEPL 专线 3
+      - 台湾高级 IEPL 专线 1
+      - 新加坡高级 IEPL 专线 1
+      - 马来西亚标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 5
+      - 越南标准 IEPL 专线 1
+      - 泰国标准 IEPL 专线 1
+      - 台湾高级 IEPL 专线 2
+      - 香港标准 IEPL 专线 6
+      - 香港标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 3
+      - 新加坡高级 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 8
+      - 印尼标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 7
+      - 香港高级 IEPL 专线 3
+      - 香港标准 IEPL 专线 4
+      - 美国实验性 IEPL 专线 1
+      - 美国标准 IEPL 专线 8
+      - 美国标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 7
+      - 日本标准 IEPL 专线 5
+      - 加拿大标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 5
+      - 日本标准 IEPL 专线 6
+      - 日本标准 IEPL 专线 4
+      - 以色列标准 IEPL 专线 1
+      - 乌克兰标准 IEPL 专线 1
+      - 巴西标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 2
+      - 荷兰标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 1
+      - 尼日利亚标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 3
+      - 日本高级 IEPL 专线 1
+      - 日本实验性 IEPL 专线 1
+      - 阿根廷标准 IEPL 专线 1
+      - 德国标准 IEPL 专线 2
+      - 美国高级 IEPL 专线 3
+      - 美国高级 IEPL 专线 1
+      - 英国标准 IEPL 专线 1
+      - 韩国标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 2
+      - 智利标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 3
+      - 日本标准 IEPL 专线 7
+      - 美国高级 IEPL 专线 2
+      - 韩国标准 IEPL 专线 2
+      - 摩尔多瓦标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 8
+      - 加拿大标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 6
+      - 意大利标准 IEPL 专线 1
+      - 匈牙利标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 4
+      - 美国标准 IEPL 专线 3
+      - 荷兰标准 IEPL 专线 2
+      - 德国标准 IEPL 专线 1
+      - 英国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 2
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+  - name: 🌍 国外媒体
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - ♻️ 自动选择
+      - 🎯 全球直连
+      - 土耳其标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 3
+      - 香港高级 IEPL 专线 1
+      - 台湾标准 IEPL 专线 2
+      - 香港标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 6
+      - 新加坡标准 IEPL 专线 4
+      - 香港标准 IEPL 专线 7
+      - 新西兰标准 IEPL 专线 1
+      - "Traffic: 308.06 GB | 1000 GB"
+      - 台湾标准 IEPL 专线 3
+      - 新加坡标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 1
+      - 香港实验性 IEPL 专线 1
+      - 台湾高级 IEPL 专线 3
+      - 台湾标准 IEPL 专线 1
+      - 香港高级 IEPL 专线 2
+      - 菲律宾标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 5
+      - 新加坡实验性 IEPL 专线 1
+      - 印度标准 IEPL 专线 1
+      - 澳大利亚标准 IEPL 专线 1
+      - 阿联酋标准 IEPL 专线 1
+      - "Expire: 2025-10-14"
+      - 香港标准 IEPL 专线 8
+      - 新加坡高级 IEPL 专线 3
+      - 台湾高级 IEPL 专线 1
+      - 新加坡高级 IEPL 专线 1
+      - 马来西亚标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 5
+      - 越南标准 IEPL 专线 1
+      - 泰国标准 IEPL 专线 1
+      - 台湾高级 IEPL 专线 2
+      - 香港标准 IEPL 专线 6
+      - 香港标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 3
+      - 新加坡高级 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 8
+      - 印尼标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 7
+      - 香港高级 IEPL 专线 3
+      - 香港标准 IEPL 专线 4
+      - 美国实验性 IEPL 专线 1
+      - 美国标准 IEPL 专线 8
+      - 美国标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 7
+      - 日本标准 IEPL 专线 5
+      - 加拿大标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 5
+      - 日本标准 IEPL 专线 6
+      - 日本标准 IEPL 专线 4
+      - 以色列标准 IEPL 专线 1
+      - 乌克兰标准 IEPL 专线 1
+      - 巴西标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 2
+      - 荷兰标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 1
+      - 尼日利亚标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 3
+      - 日本高级 IEPL 专线 1
+      - 日本实验性 IEPL 专线 1
+      - 阿根廷标准 IEPL 专线 1
+      - 德国标准 IEPL 专线 2
+      - 美国高级 IEPL 专线 3
+      - 美国高级 IEPL 专线 1
+      - 英国标准 IEPL 专线 1
+      - 韩国标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 2
+      - 智利标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 3
+      - 日本标准 IEPL 专线 7
+      - 美国高级 IEPL 专线 2
+      - 韩国标准 IEPL 专线 2
+      - 摩尔多瓦标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 8
+      - 加拿大标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 6
+      - 意大利标准 IEPL 专线 1
+      - 匈牙利标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 4
+      - 美国标准 IEPL 专线 3
+      - 荷兰标准 IEPL 专线 2
+      - 德国标准 IEPL 专线 1
+      - 英国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 2
+  - name: 📲 电报信息
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🎯 全球直连
+      - 土耳其标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 3
+      - 香港高级 IEPL 专线 1
+      - 台湾标准 IEPL 专线 2
+      - 香港标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 6
+      - 新加坡标准 IEPL 专线 4
+      - 香港标准 IEPL 专线 7
+      - 新西兰标准 IEPL 专线 1
+      - "Traffic: 308.06 GB | 1000 GB"
+      - 台湾标准 IEPL 专线 3
+      - 新加坡标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 1
+      - 香港实验性 IEPL 专线 1
+      - 台湾高级 IEPL 专线 3
+      - 台湾标准 IEPL 专线 1
+      - 香港高级 IEPL 专线 2
+      - 菲律宾标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 5
+      - 新加坡实验性 IEPL 专线 1
+      - 印度标准 IEPL 专线 1
+      - 澳大利亚标准 IEPL 专线 1
+      - 阿联酋标准 IEPL 专线 1
+      - "Expire: 2025-10-14"
+      - 香港标准 IEPL 专线 8
+      - 新加坡高级 IEPL 专线 3
+      - 台湾高级 IEPL 专线 1
+      - 新加坡高级 IEPL 专线 1
+      - 马来西亚标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 5
+      - 越南标准 IEPL 专线 1
+      - 泰国标准 IEPL 专线 1
+      - 台湾高级 IEPL 专线 2
+      - 香港标准 IEPL 专线 6
+      - 香港标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 3
+      - 新加坡高级 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 8
+      - 印尼标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 7
+      - 香港高级 IEPL 专线 3
+      - 香港标准 IEPL 专线 4
+      - 美国实验性 IEPL 专线 1
+      - 美国标准 IEPL 专线 8
+      - 美国标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 7
+      - 日本标准 IEPL 专线 5
+      - 加拿大标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 5
+      - 日本标准 IEPL 专线 6
+      - 日本标准 IEPL 专线 4
+      - 以色列标准 IEPL 专线 1
+      - 乌克兰标准 IEPL 专线 1
+      - 巴西标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 2
+      - 荷兰标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 1
+      - 尼日利亚标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 3
+      - 日本高级 IEPL 专线 1
+      - 日本实验性 IEPL 专线 1
+      - 阿根廷标准 IEPL 专线 1
+      - 德国标准 IEPL 专线 2
+      - 美国高级 IEPL 专线 3
+      - 美国高级 IEPL 专线 1
+      - 英国标准 IEPL 专线 1
+      - 韩国标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 2
+      - 智利标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 3
+      - 日本标准 IEPL 专线 7
+      - 美国高级 IEPL 专线 2
+      - 韩国标准 IEPL 专线 2
+      - 摩尔多瓦标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 8
+      - 加拿大标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 6
+      - 意大利标准 IEPL 专线 1
+      - 匈牙利标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 4
+      - 美国标准 IEPL 专线 3
+      - 荷兰标准 IEPL 专线 2
+      - 德国标准 IEPL 专线 1
+      - 英国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 2
+  - name: Ⓜ️ 微软服务
+    type: select
+    proxies:
+      - 🎯 全球直连
+      - 🚀 节点选择
+      - 土耳其标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 3
+      - 香港高级 IEPL 专线 1
+      - 台湾标准 IEPL 专线 2
+      - 香港标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 6
+      - 新加坡标准 IEPL 专线 4
+      - 香港标准 IEPL 专线 7
+      - 新西兰标准 IEPL 专线 1
+      - "Traffic: 308.06 GB | 1000 GB"
+      - 台湾标准 IEPL 专线 3
+      - 新加坡标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 1
+      - 香港实验性 IEPL 专线 1
+      - 台湾高级 IEPL 专线 3
+      - 台湾标准 IEPL 专线 1
+      - 香港高级 IEPL 专线 2
+      - 菲律宾标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 5
+      - 新加坡实验性 IEPL 专线 1
+      - 印度标准 IEPL 专线 1
+      - 澳大利亚标准 IEPL 专线 1
+      - 阿联酋标准 IEPL 专线 1
+      - "Expire: 2025-10-14"
+      - 香港标准 IEPL 专线 8
+      - 新加坡高级 IEPL 专线 3
+      - 台湾高级 IEPL 专线 1
+      - 新加坡高级 IEPL 专线 1
+      - 马来西亚标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 5
+      - 越南标准 IEPL 专线 1
+      - 泰国标准 IEPL 专线 1
+      - 台湾高级 IEPL 专线 2
+      - 香港标准 IEPL 专线 6
+      - 香港标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 3
+      - 新加坡高级 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 8
+      - 印尼标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 7
+      - 香港高级 IEPL 专线 3
+      - 香港标准 IEPL 专线 4
+      - 美国实验性 IEPL 专线 1
+      - 美国标准 IEPL 专线 8
+      - 美国标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 7
+      - 日本标准 IEPL 专线 5
+      - 加拿大标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 5
+      - 日本标准 IEPL 专线 6
+      - 日本标准 IEPL 专线 4
+      - 以色列标准 IEPL 专线 1
+      - 乌克兰标准 IEPL 专线 1
+      - 巴西标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 2
+      - 荷兰标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 1
+      - 尼日利亚标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 3
+      - 日本高级 IEPL 专线 1
+      - 日本实验性 IEPL 专线 1
+      - 阿根廷标准 IEPL 专线 1
+      - 德国标准 IEPL 专线 2
+      - 美国高级 IEPL 专线 3
+      - 美国高级 IEPL 专线 1
+      - 英国标准 IEPL 专线 1
+      - 韩国标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 2
+      - 智利标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 3
+      - 日本标准 IEPL 专线 7
+      - 美国高级 IEPL 专线 2
+      - 韩国标准 IEPL 专线 2
+      - 摩尔多瓦标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 8
+      - 加拿大标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 6
+      - 意大利标准 IEPL 专线 1
+      - 匈牙利标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 4
+      - 美国标准 IEPL 专线 3
+      - 荷兰标准 IEPL 专线 2
+      - 德国标准 IEPL 专线 1
+      - 英国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 2
+  - name: 🍎 苹果服务
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🎯 全球直连
+      - 土耳其标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 3
+      - 香港高级 IEPL 专线 1
+      - 台湾标准 IEPL 专线 2
+      - 香港标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 6
+      - 新加坡标准 IEPL 专线 4
+      - 香港标准 IEPL 专线 7
+      - 新西兰标准 IEPL 专线 1
+      - "Traffic: 308.06 GB | 1000 GB"
+      - 台湾标准 IEPL 专线 3
+      - 新加坡标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 1
+      - 香港实验性 IEPL 专线 1
+      - 台湾高级 IEPL 专线 3
+      - 台湾标准 IEPL 专线 1
+      - 香港高级 IEPL 专线 2
+      - 菲律宾标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 5
+      - 新加坡实验性 IEPL 专线 1
+      - 印度标准 IEPL 专线 1
+      - 澳大利亚标准 IEPL 专线 1
+      - 阿联酋标准 IEPL 专线 1
+      - "Expire: 2025-10-14"
+      - 香港标准 IEPL 专线 8
+      - 新加坡高级 IEPL 专线 3
+      - 台湾高级 IEPL 专线 1
+      - 新加坡高级 IEPL 专线 1
+      - 马来西亚标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 5
+      - 越南标准 IEPL 专线 1
+      - 泰国标准 IEPL 专线 1
+      - 台湾高级 IEPL 专线 2
+      - 香港标准 IEPL 专线 6
+      - 香港标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 3
+      - 新加坡高级 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 8
+      - 印尼标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 7
+      - 香港高级 IEPL 专线 3
+      - 香港标准 IEPL 专线 4
+      - 美国实验性 IEPL 专线 1
+      - 美国标准 IEPL 专线 8
+      - 美国标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 7
+      - 日本标准 IEPL 专线 5
+      - 加拿大标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 5
+      - 日本标准 IEPL 专线 6
+      - 日本标准 IEPL 专线 4
+      - 以色列标准 IEPL 专线 1
+      - 乌克兰标准 IEPL 专线 1
+      - 巴西标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 2
+      - 荷兰标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 1
+      - 尼日利亚标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 3
+      - 日本高级 IEPL 专线 1
+      - 日本实验性 IEPL 专线 1
+      - 阿根廷标准 IEPL 专线 1
+      - 德国标准 IEPL 专线 2
+      - 美国高级 IEPL 专线 3
+      - 美国高级 IEPL 专线 1
+      - 英国标准 IEPL 专线 1
+      - 韩国标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 2
+      - 智利标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 3
+      - 日本标准 IEPL 专线 7
+      - 美国高级 IEPL 专线 2
+      - 韩国标准 IEPL 专线 2
+      - 摩尔多瓦标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 8
+      - 加拿大标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 6
+      - 意大利标准 IEPL 专线 1
+      - 匈牙利标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 4
+      - 美国标准 IEPL 专线 3
+      - 荷兰标准 IEPL 专线 2
+      - 德国标准 IEPL 专线 1
+      - 英国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 2
+  - name: 🎯 全球直连
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 节点选择
+      - ♻️ 自动选择
+  - name: 🛑 全球拦截
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+  - name: 🍃 应用净化
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🎯 全球直连
+      - ♻️ 自动选择
+      - 土耳其标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 3
+      - 香港高级 IEPL 专线 1
+      - 台湾标准 IEPL 专线 2
+      - 香港标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 6
+      - 新加坡标准 IEPL 专线 4
+      - 香港标准 IEPL 专线 7
+      - 新西兰标准 IEPL 专线 1
+      - "Traffic: 308.06 GB | 1000 GB"
+      - 台湾标准 IEPL 专线 3
+      - 新加坡标准 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 1
+      - 香港实验性 IEPL 专线 1
+      - 台湾高级 IEPL 专线 3
+      - 台湾标准 IEPL 专线 1
+      - 香港高级 IEPL 专线 2
+      - 菲律宾标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 5
+      - 新加坡实验性 IEPL 专线 1
+      - 印度标准 IEPL 专线 1
+      - 澳大利亚标准 IEPL 专线 1
+      - 阿联酋标准 IEPL 专线 1
+      - "Expire: 2025-10-14"
+      - 香港标准 IEPL 专线 8
+      - 新加坡高级 IEPL 专线 3
+      - 台湾高级 IEPL 专线 1
+      - 新加坡高级 IEPL 专线 1
+      - 马来西亚标准 IEPL 专线 1
+      - 香港标准 IEPL 专线 5
+      - 越南标准 IEPL 专线 1
+      - 泰国标准 IEPL 专线 1
+      - 台湾高级 IEPL 专线 2
+      - 香港标准 IEPL 专线 6
+      - 香港标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 3
+      - 新加坡高级 IEPL 专线 2
+      - 新加坡标准 IEPL 专线 8
+      - 印尼标准 IEPL 专线 1
+      - 新加坡标准 IEPL 专线 7
+      - 香港高级 IEPL 专线 3
+      - 香港标准 IEPL 专线 4
+      - 美国实验性 IEPL 专线 1
+      - 美国标准 IEPL 专线 8
+      - 美国标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 7
+      - 日本标准 IEPL 专线 5
+      - 加拿大标准 IEPL 专线 1
+      - 美国标准 IEPL 专线 5
+      - 日本标准 IEPL 专线 6
+      - 日本标准 IEPL 专线 4
+      - 以色列标准 IEPL 专线 1
+      - 乌克兰标准 IEPL 专线 1
+      - 巴西标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 2
+      - 荷兰标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 1
+      - 尼日利亚标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 3
+      - 日本高级 IEPL 专线 1
+      - 日本实验性 IEPL 专线 1
+      - 阿根廷标准 IEPL 专线 1
+      - 德国标准 IEPL 专线 2
+      - 美国高级 IEPL 专线 3
+      - 美国高级 IEPL 专线 1
+      - 英国标准 IEPL 专线 1
+      - 韩国标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 2
+      - 智利标准 IEPL 专线 1
+      - 日本高级 IEPL 专线 3
+      - 日本标准 IEPL 专线 7
+      - 美国高级 IEPL 专线 2
+      - 韩国标准 IEPL 专线 2
+      - 摩尔多瓦标准 IEPL 专线 1
+      - 日本标准 IEPL 专线 8
+      - 加拿大标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 6
+      - 意大利标准 IEPL 专线 1
+      - 匈牙利标准 IEPL 专线 1
+      - 法国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 4
+      - 美国标准 IEPL 专线 3
+      - 荷兰标准 IEPL 专线 2
+      - 德国标准 IEPL 专线 1
+      - 英国标准 IEPL 专线 2
+      - 美国标准 IEPL 专线 2
+rule-providers:
+  LocalAreaNetwork:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/LocalAreaNetwork.list
+    path: ./rules/LocalAreaNetwork.yaml
+  BanAD:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/BanAD.list
+    path: ./rules/BanAD.yaml
+  BanProgramAD:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/BanProgramAD.list
+    path: ./rules/BanProgramAD.yaml
+  GoogleCN:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/GoogleCN.list
+    path: ./rules/GoogleCN.yaml
+  SteamCN:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Ruleset/SteamCN.list
+    path: ./rules/SteamCN.yaml
+  Microsoft:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Microsoft.list
+    path: ./rules/Microsoft.yaml
+  Apple:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Apple.list
+    path: ./rules/Apple.yaml
+  ProxyMedia:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/ProxyMedia.list
+    path: ./rules/ProxyMedia.yaml
+  Telegram:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Telegram.list
+    path: ./rules/Telegram.yaml
+  ProxyLite:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/ProxyLite.list
+    path: ./rules/ProxyLite.yaml
+  ChinaDomain:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/ChinaDomain.list
+    path: ./rules/ChinaDomain.yaml
+  ChinaCompanyIp:
+    type: http
+    behavior: classical
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/ChinaCompanyIp.list
+    path: ./rules/ChinaCompanyIp.yaml
+rules:
+  - RULE-SET,LocalAreaNetwork,🎯 全球直连
+  - RULE-SET,BanAD,🛑 全球拦截
+  - RULE-SET,BanProgramAD,🍃 应用净化
+  - RULE-SET,GoogleCN,🎯 全球直连
+  - RULE-SET,SteamCN,🎯 全球直连
+  - RULE-SET,Microsoft,Ⓜ️ 微软服务
+  - RULE-SET,Apple,🍎 苹果服务
+  - RULE-SET,ProxyMedia,🌍 国外媒体
+  - RULE-SET,Telegram,📲 电报信息
+  - RULE-SET,ProxyLite,🚀 节点选择
+  - RULE-SET,ChinaDomain,🎯 全球直连
+  - RULE-SET,ChinaCompanyIp,🎯 全球直连
+  - GEOIP,CN,🎯 全球直连
+  - MATCH,🐟 漏网之鱼
