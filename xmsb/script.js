@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 提交步数到API。account=账号，password=密码，steps=步数
     async function submitSteps(account, password, steps) {
-        const apiUrl = `https://api.5k4.cn/api/zeep?key=2e1ea3f60e06d0c5&account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}&steps=${encodeURIComponent(steps)}`;
+        const apiUrl = `https://api.5k4.cn/Interface/zepp/?key=ee4cee84c2c2e54b07cf3280937694d0&account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}&steps=${encodeURIComponent(steps)}`;
         
         try {
             const response = await fetch(apiUrl, {
