@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 提交步数到API。account=账号，password=密码，steps=步数（可选，支持单数字或范围格式）
     async function submitSteps(account, password, steps) {
-        const apiUrl = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/xiaozhou-sb';
+        const apiUrl = 'https://jnr-api.lvxin.xn--6qq986b3xl/api/xiaozhou-mi';
         // 构建请求体
         const body = {
             user: account,
