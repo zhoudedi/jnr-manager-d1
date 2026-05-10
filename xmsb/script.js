@@ -130,16 +130,38 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
         
-        // 验证步数
-        if (!steps) {
-            showInputError('steps', '请输入步数');
-            isValid = false;
-        } else if (isNaN(steps) || parseInt(steps) <= 0) {
-            showInputError('steps', '请输入有效的步数');
-            isValid = false;
-        } else if (parseInt(steps) > 99999) {
-            showInputError('steps', '步数不能超过99999');
-            isValid = false;
+        // 验证步数（可选，支持单数字和范围格式）
+        if (steps) {
+            // 检查是否为范围格式 (如 5000-10000)
+            if (steps.includes('-')) {
+                const parts = steps.split('-');
+                if (parts.length !== 2) {
+                    showInputError('steps', '范围格式应为: 最小值-最大值');
+                    isValid = false;
+                } else {
+                    const min = parseInt(parts[0]);
+                    const max = parseInt(parts[1]);
+                    if (isNaN(min) || isNaN(max) || min <= 0 || max <= 0) {
+                        showInputError('steps', '请输入有效的步数范围');
+                        isValid = false;
+                    } else if (min > 99999 || max > 99999) {
+                        showInputError('steps', '步数不能超过99999');
+                        isValid = false;
+                    } else if (min > max) {
+                        showInputError('steps', '最小值不能大于最大值');
+                        isValid = false;
+                    }
+                }
+            } else {
+                // 单数字格式
+                if (isNaN(steps) || parseInt(steps) <= 0) {
+                    showInputError('steps', '请输入有效的步数');
+                    isValid = false;
+                } else if (parseInt(steps) > 99999) {
+                    showInputError('steps', '步数不能超过99999');
+                    isValid = false;
+                }
+            }
         }
         
         return isValid;
@@ -340,39 +362,48 @@ document.addEventListener('DOMContentLoaded', function() {
         initGlassSettings();
     }
     
-    // 提交步数到API。account=账号，password=密码，steps=步数
+    // 提交步数到API。account=账号，password=密码，steps=步数（可选，支持单数字或范围格式）
     async function submitSteps(account, password, steps) {
-        const apiUrl = `https://api.5k4.cn/Interface/zepp/?key=ee4cee84c2c2e54b07cf3280937694d0&account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}&steps=${encodeURIComponent(steps)}`;
-        
+        const apiUrl = 'http://jnr-api.lvxin.xn--6qq986b3xl/api/xiaozhou-sb';
+
+        // 构建请求体
+        const body = {
+            user: account,
+            password: password
+        };
+        // 步数可选：有值则传，无值则不传（API使用默认范围10000-19999）
+        if (steps) {
+            body.step = steps;
+        }
+
         try {
             const response = await fetch(apiUrl, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                }
+                },
+                body: JSON.stringify(body)
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP错误! 状态: ${response.status}`);
             }
-            
+
             const data = await response.json();
-            
-            // 根据返回的数据结构处理结果
-            if (data.code === 1 || data.code === '1') {
-                throw new Error(data.msg || data.message || '格式错误，请检查输入参数');
+
+            if (data.success === false) {
+                throw new Error(data.message || '提交步数失败');
             }
-            
+
             return {
                 status: 'success',
                 success: data.success || true,
-                message: data.message || data.msg || '步数提交成功',
-                step: data.step || steps,
-                account: data.account || account,
-                proxy_used: data.proxy_used || '未使用代理',
-                time: data.time || new Date().toLocaleString('zh-CN')
+                message: data.message || '步数提交成功',
+                step: data.step || steps || '随机(10000-19999)',
+                account: data.account || account
             };
-            
+
         } catch (error) {
             if (error.name === 'TypeError' && error.message.includes('fetch')) {
                 throw new Error('网络连接失败，请检查网络连接');
@@ -629,13 +660,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 添加步数输入限制
+    // 添加步数输入限制（支持范围格式）
     document.getElementById('steps').addEventListener('input', function() {
-        if (this.value.length > 5) {
-            this.value = this.value.slice(0, 5);
-        }
-        if (parseInt(this.value) > 99999) {
-            this.value = '99999';
+        // 允许数字和连字符（范围格式）
+        this.value = this.value.replace(/[^0-9-]/g, '');
+        // 限制总长度
+        if (this.value.length > 11) {
+            this.value = this.value.slice(0, 11);
         }
     });
     
